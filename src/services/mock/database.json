@@ -1,0 +1,33 @@
+{
+    "user":{
+        "id": "user-001",
+        "name": "Junior Lummertz",
+        "email": "junior@email.com"
+        
+    },
+    "account":{
+        "id": "account-001",
+        "userId": "user-001",
+        "agency": "1903",
+        "number": "1983-3",
+        "balance": 4250.75
+    },
+    "transactions": [{
+        "id":"transaction-001",
+        "accountId":"account-001",
+        "description":"PIX recebido",
+        "type":"pix",
+        "amount":850,
+        "direction":"credit",
+        "createdAt":"2026-09-12T10:30:00"
+    },
+    {
+        "id": "transaction-002",
+        "accountId": "account-001",
+        "description": "Supermercado",
+        "type": "purchase",
+        "amount": 156.90,
+        "direction": "debit",
+        "createdAt": "2026-09-11T18:20:00"
+    }
+]}
