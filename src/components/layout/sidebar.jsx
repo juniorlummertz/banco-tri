@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 
-import { Home, QrCode, ArrowLeftRight, CreditCard, UserRound } from "lucide-react"
+import { Home, QrCode, ArrowLeftRight, CreditCard, UserRound,  ChartNoAxesCombined } from "lucide-react"
 
 const menuItems = [{
     name: "Início",
@@ -15,6 +15,9 @@ const menuItems = [{
     name: "Cartões",
     path: "/cartoes",
     icon: CreditCard}, {
+    name: "FinUp",
+    path: "/finup",
+    icon: ChartNoAxesCombined}, {
     name: "Perfil",
     path: "/perfil",
     icon: UserRound}

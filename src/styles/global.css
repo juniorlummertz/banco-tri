@@ -291,3 +291,63 @@ button {
 
   color: #6b7280;
 }
+/* estilização Fin-Up */
+.finup-page {
+  max-width: 1000px;
+}
+
+.financial-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  max-width: 900px;
+}
+
+.financial-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  padding: 24px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 30px
+    rgba(15, 23, 42, 0.06);
+}
+
+.financial-card span {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.financial-card strong {
+  font-size: 26px;
+}
+
+.financial-card.income strong {
+  color: #059669;
+}
+
+.financial-card.expense strong {
+  color: #dc2626;
+}
+
+.financial-card.balance strong {
+  color: #009ee3;
+}
+
+@media (max-width: 800px) {
+  .financial-summary {
+    grid-template-columns: 1fr;
+  }
+}
