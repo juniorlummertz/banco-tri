@@ -19,6 +19,7 @@
         "type":"pix",
         "amount":850,
         "direction":"credit",
+        "category": "income",
         "createdAt":"2026-09-12T10:30:00"
     },
     {
@@ -28,6 +29,7 @@
         "type": "purchase",
         "amount": 156.90,
         "direction": "debit",
+        "category": "food",
         "createdAt": "2026-09-11T18:20:00"
     }
 ]}

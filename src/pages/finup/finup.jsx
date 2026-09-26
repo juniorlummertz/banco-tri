@@ -1,5 +1,6 @@
 import { useAccount } from "../../hooks/useAccount"
 import { formatCurrency } from "../../utils/currency"
+import { calculateFinancialsummary } from "../../services/finup/financialService"
 
 export default function FinUp() {
     const {transactions, loading, error} = useAccount()
@@ -9,11 +10,8 @@ export default function FinUp() {
         if (error) {
         return <p>Erro: {error}</p>
         }
-    const totalIncome = transactions.filter((transaction) =>transaction.direction === "credit")
-        .reduce((total, transaction) => total + transaction.amount, 0)
-    const totalExpenses = transactions.filter((transaction) => transaction.direction === "debit" )
-        .reduce((total, transaction) =>total + transaction.amount, 0)
-    const monthlyBalance =totalIncome - totalExpenses
+        const { totalIncome, totalExpenses, balance } = calculateFinancialsummary(transactions)
+        {formatCurrency(balance)} //adicionado para exibir o saldo formatado
         return (<div className="finup-page">
             <header className="dashboard-header">
                 <span className="section-label">FinUp</span>

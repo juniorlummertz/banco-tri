@@ -1,4 +1,5 @@
 import { formatCurrency } from "../../utils/currency"
+import { getCategoryLabel } from "../../utils/category"
 
 export default function TransactionItem({ transaction }) {
   const isCredit =
@@ -19,9 +20,9 @@ export default function TransactionItem({ transaction }) {
         </strong>
 
         <span>
-          {typeLabels[transaction.type] || transaction.type}
+          {getCategoryLabel(transaction.category)}
         </span>
-      </div>
+      </div> //trocado para exibir a categoria da transação
 
       <strong
         className={
