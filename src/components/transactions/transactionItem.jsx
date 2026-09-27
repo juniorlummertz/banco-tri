@@ -1,16 +1,14 @@
 import { formatCurrency } from "../../utils/currency"
 import { getCategoryLabel } from "../../utils/category"
+/*
+  Representa visualmente uma única movimentação financeira.
 
+  O componente recebe a transação por props e não altera
+  os dados recebidos; apenas decide como apresentá-los.
+*/
 export default function TransactionItem({ transaction }) {
   const isCredit =
     transaction.direction === "credit"
-
-  const typeLabels = {
-    pix: "Pix",
-    purchase: "Compra",
-    transfer: "Transferência",
-    payment: "Pagamento"
-  }
   return (
     <div className="transaction-item">
 
@@ -18,11 +16,15 @@ export default function TransactionItem({ transaction }) {
         <strong>
           {transaction.description}
         </strong>
-
+         {/*
+          O banco armazena categorias usando códigos estáveis,
+          como "food". A interface converte esses códigos para
+          textos amigáveis, como "Alimentação".
+        */}
         <span>
           {getCategoryLabel(transaction.category)}
         </span>
-      </div> //trocado para exibir a categoria da transação
+      </div>
 
       <strong
         className={

@@ -1,13 +1,34 @@
+/* =========================================================
+   CONFIGURAÇÕES GLOBAIS
+   Regras aplicadas à aplicação inteira.
+   ========================================================= */
+/*
+  Faz com que padding e border façam parte
+  do tamanho total dos elementos.
+
+  Isso deixa o cálculo de largura e altura
+  mais previsível durante a estilização.
+*/
 * {
     box-sizing: border-box;
 }
+/*
+  :root representa o nível mais alto do documento.
 
+  Aqui definimos:
+  - fonte padrão da aplicação;
+  - cores principais;
+  - variáveis CSS reutilizáveis.
+
+  As variáveis começam com "--" e podem ser utilizadas
+  posteriormente com var(--nome-da-variavel).
+*/
 :root{
     font-family: arial, helvetica, sans-serif;
-
+ 
     color: #111827;
     background: #f4f7fb;
-
+  /* Paleta principal da aplicação */
     --blue: #009ee3;
   --blue-dark: #0076b2;
   --black: #111827;
@@ -16,29 +37,80 @@
   --background: #f4f7fb;
   --white: #ffffff;
 }
+/*
+  Configurações gerais da página.
 
+  margin: 0 remove a margem padrão criada pelo navegador.
+
+  min-height: 100vh garante que a aplicação ocupe
+  pelo menos toda a altura da tela.
+*/
 body{
     margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background: var(--background);
 }
-
-button {
-    input{
+/*
+  Faz inputs e botões herdarem a mesma fonte
+  utilizada pelo restante da aplicação.
+*/
+button,
+  input{
         font: inherit;
     }
+    /*
+  Remove o sublinhado padrão dos links
+  e faz o link utilizar a cor definida pelo elemento pai.
+*/
     a {
         color: inherit;
         text-decoration: none;
     }
-}
+    /* =========================================================
+   LAYOUT PRINCIPAL DA APLICAÇÃO
+   Divide a tela entre Sidebar e conteúdo.
+   ========================================================= */
+
+/*
+  O AppLayout possui duas colunas:
+
+  250px -> Sidebar
+  1fr   -> restante da tela para o conteúdo
+
+  CSS Grid é utilizado porque estamos dividindo
+  a página em regiões principais.
+*/
 .app-layout {
   display: grid;
   grid-template-columns: 250px 1fr;
   min-height: 100vh;
 }
+/*
+  Área onde cada página é exibida.
 
+  No React, é onde o <Outlet /> do AppLayout
+  renderiza Dashboard, FinUp e futuras páginas.
+*/
+.app-content {
+  padding: 40px;
+
+  background: #f4f7fb;
+}
+/* =========================================================
+   SIDEBAR
+   Menu lateral compartilhado entre as páginas.
+   ========================================================= */
+
+/*
+  Container principal da Sidebar.
+
+  Flexbox em coluna organiza:
+  - marca;
+  - menu;
+
+  um abaixo do outro.
+*/
 .sidebar {
   background: #111827;
   color: white;
@@ -50,13 +122,19 @@ button {
 
   gap: 40px;
 }
-
+/*
+  Região da identidade visual:
+  símbolo TRI + nome Banco Tri.
+*/
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
+/*
+  Quadrado azul que representa visualmente
+  a marca "TRI".
+*/
 .brand-symbol {
   width: 46px;
   height: 46px;
@@ -74,11 +152,15 @@ button {
   font-weight: 800;
   font-size: 14px;
 }
-
+/*
+  O nome "Banco Tri" ocupa sua própria linha.
+*/
 .brand strong {
   display: block;
 }
-
+/*
+  Texto secundário abaixo do nome do banco.
+*/
 .brand span {
   display: block;
 
@@ -88,14 +170,24 @@ button {
 
   font-size: 12px;
 }
+/*
+  Container dos links do menu.
 
+  Cada opção aparece abaixo da anterior.
+*/
 .sidebar-menu {
   display: flex;
   flex-direction: column;
 
   gap: 8px;
 }
+/*
+  Estilo padrão de cada link da Sidebar.
 
+  O link contém:
+  - ícone;
+  - texto.
+*/
 .sidebar-link {
   display: flex;
   align-items: center;
@@ -109,25 +201,42 @@ button {
   border-radius: 10px;
 
   text-decoration: none;
-
+  /*
+    Suaviza alterações visuais,
+    como mudança de fundo no hover.
+  */
   transition: 0.2s;
 }
-
+/*
+  :hover é aplicado quando o usuário
+  passa o mouse sobre o link.
+*/
 .sidebar-link:hover {
   background: #1f2937;
   color: white;
 }
+/*
+  A classe .active é adicionada pelo NavLink
+  quando aquela rota corresponde à página atual.
 
+  Exemplo:
+  /finup -> FinUp aparece destacado.
+*/
 .sidebar-link.active {
   background: #009ee3;
   color: white;
 }
+/* =========================================================
+   CARD DE SALDO
+   Utilizado pelo componente BalanceCard.
+   ========================================================= */
 
-.app-content {
-  padding: 40px;
-
-  background: #f4f7fb;
-}
+/*
+  Card principal que apresenta:
+  - saldo disponível;
+  - agência;
+  - conta.
+*/
 .balance-card {
   max-width: 720px;
 
@@ -138,19 +247,25 @@ button {
   border-radius: 20px;
 
   color: white;
-
+/*
+    Cria o fundo em degradê azul.
+  */
   background:
     linear-gradient(
       135deg,
       #009ee3,
       #006da8
     );
-
+/*
+    Adiciona profundidade visual ao card.
+  */
   box-shadow:
     0 18px 40px
     rgba(0, 117, 180, 0.18);
 }
-
+/*
+  Texto "Saldo disponível".
+*/
 .balance-label {
   display: block;
 
@@ -158,7 +273,12 @@ button {
 
   font-size: 14px;
 }
+/*
+  Valor principal da conta.
 
+  Exemplo:
+  R$ 4.250,75
+*/
 .balance-value {
   margin: 12px 0 32px;
 
@@ -166,7 +286,10 @@ button {
 
   color: white;
 }
-
+/*
+  Organiza agência e número da conta
+  horizontalmente.
+*/
 .account-info {
   display: flex;
 
@@ -176,6 +299,15 @@ button {
 
   font-size: 14px;
 }
+/* =========================================================
+   EXTRATO / TRANSAÇÕES
+   Estilos dos componentes TransactionList e TransactionItem.
+   ========================================================= */
+
+/*
+  Painel branco onde as movimentações
+  financeiras são exibidas.
+*/
 .transactions-panel {
   max-width: 720px;
 
@@ -191,7 +323,12 @@ button {
     0 8px 30px
     rgba(15, 23, 42, 0.06);
 }
+/*
+  Cabeçalho do extrato.
 
+  Coloca o título à esquerda
+  e a quantidade de movimentações à direita.
+*/
 .transactions-header {
   display: flex;
 
@@ -201,7 +338,9 @@ button {
 
   margin-bottom: 16px;
 }
-
+/*
+  Título "Últimas movimentações".
+*/
 .transactions-header h2 {
   margin: 4px 0 0;
 
@@ -219,19 +358,33 @@ button {
 
   letter-spacing: 0.08em;
 }
+/*
+  Texto que informa quantas movimentações existem.
 
+  Exemplo:
+  "2 movimentações".
+*/
 .transaction-count {
   color: #6b7280;
 
   font-size: 13px;
 }
+/*
+  Container de todas as transações.
 
+  Cada TransactionItem fica abaixo do anterior.
+*/
 .transaction-list {
   display: flex;
 
   flex-direction: column;
 }
+/*
+  Representa uma única movimentação.
 
+  A descrição fica à esquerda
+  e o valor fica à direita.
+*/
 .transaction-item {
   display: flex;
 
@@ -240,15 +393,24 @@ button {
   justify-content: space-between;
 
   padding: 18px 0;
-
+/*
+    Linha que separa visualmente
+    uma movimentação da outra.
+  */
   border-bottom:
     1px solid #e5e7eb;
 }
-
+/*
+  Remove a linha divisória
+  da última movimentação da lista.
+*/
 .transaction-item:last-child {
   border-bottom: none;
 }
-
+/*
+  Agrupa descrição e categoria
+  da movimentação.
+*/
 .transaction-details {
   display: flex;
 
@@ -256,46 +418,122 @@ button {
 
   gap: 4px;
 }
+/*
+  Estiliza o texto secundário
+  onde exibimos a categoria.
 
+  Exemplo:
+  Alimentação.
+*/
 .transaction-details span {
   color: #6b7280;
 
   font-size: 13px;
 }
-
+/*
+  Estilo base do valor da transação.
+*/
 .transaction-value {
   font-size: 15px;
 }
+/*
+  Transação de entrada de dinheiro.
 
+  Verde representa crédito.
+*/
 .transaction-value.credit {
   color: #059669;
 }
+/*
+  Transação de saída de dinheiro.
 
+  Vermelho representa débito.
+*/
 .transaction-value.debit {
   color: #dc2626;
 }
+/* =========================================================
+   CABEÇALHO DAS PÁGINAS
+   Utilizado no Dashboard e no FinUp.
+   ========================================================= */
+
+/*
+  Limita a largura do cabeçalho
+  para acompanhar os demais elementos da página.
+*/
 .dashboard-header {
   max-width: 720px;
 
   margin-bottom: 24px;
 }
+/*
+  Título principal da página.
 
+  Exemplo:
+  "Olá, Junior"
+  ou
+  "Visão financeira".
+*/
 .dashboard-header h1 {
   margin: 6px 0 8px;
 
   font-size: 32px;
 }
-
+/*
+  Texto de apoio abaixo do título.
+*/
 .dashboard-header p {
   margin: 0;
 
   color: #6b7280;
+}/*
+  Pequeno título azul utilizado acima
+  de títulos maiores.
+
+  Exemplos:
+  VISÃO GERAL
+  EXTRATO
+  FINUP
+*/
+.section-label {
+  color: #009ee3;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  /*
+    Converte visualmente o texto para maiúsculo.
+  */
+  text-transform: uppercase;
+
+  /*
+    Aumenta levemente o espaço entre as letras.
+  */
+  letter-spacing: 0.08em;
 }
-/* estilização Fin-Up */
+/* =========================================================
+   FINUP
+   Estilos específicos da área de gestão financeira.
+   ========================================================= */
+
+/*
+  Container principal da página FinUp.
+
+  Permite que futuramente a página comporte
+  mais informações do que o Dashboard.
+*/
 .finup-page {
   max-width: 1000px;
 }
+/*
+  Container dos cards:
+  - Receitas;
+  - Despesas;
+  - Resultado.
 
+  Grid cria três colunas de tamanho equivalente.
+*/
 .financial-summary {
   display: grid;
 
@@ -306,7 +544,10 @@ button {
 
   max-width: 900px;
 }
-
+/*
+  Estilo base compartilhado pelos
+  três cards financeiros.
+*/
 .financial-card {
   display: flex;
   flex-direction: column;
@@ -323,29 +564,154 @@ button {
     0 8px 30px
     rgba(15, 23, 42, 0.06);
 }
+/*
+  Nome do indicador:
 
+  Receitas
+  Despesas
+  Resultado
+*/
 .financial-card span {
   color: #6b7280;
 
   font-size: 14px;
 }
-
+/*
+  Valor financeiro principal de cada card.
+*/
 .financial-card strong {
   font-size: 26px;
 }
-
+/*
+  Receitas aparecem em verde.
+*/
 .financial-card.income strong {
   color: #059669;
 }
-
+/*
+  Despesas aparecem em vermelho.
+*/
 .financial-card.expense strong {
   color: #dc2626;
 }
-
+/*
+  Resultado aparece utilizando
+  a cor principal do Banco Tri.
+*/
 .financial-card.balance strong {
   color: #009ee3;
 }
+/* =========================================================
+   FINUP - DESPESAS POR CATEGORIA
 
+   Área responsável por apresentar como
+   as despesas estão distribuídas.
+   ========================================================= */
+
+
+/*
+  Painel branco que contém
+  todas as categorias de despesas.
+*/
+.category-panel {
+  max-width: 900px;
+
+  margin-top: 28px;
+
+  padding: 26px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 30px
+    rgba(15, 23, 42, 0.06);
+}
+
+
+/*
+  Cabeçalho da seção
+  "Despesas por categoria".
+*/
+.category-header {
+  margin-bottom: 18px;
+}
+
+
+/*
+  Ajusta o espaçamento do título
+  dentro do painel.
+*/
+.category-header h2 {
+  margin: 4px 0 0;
+
+  font-size: 20px;
+}
+
+
+/*
+  Container onde as categorias
+  serão apresentadas verticalmente.
+*/
+.category-list {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/*
+  Cada item representa uma categoria.
+
+  O nome fica à esquerda
+  e o valor total fica à direita.
+*/
+.category-item {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 16px 0;
+
+  border-bottom:
+    1px solid #e5e7eb;
+}
+
+
+/*
+  Remove a linha divisória
+  do último elemento da lista.
+*/
+.category-item:last-child {
+  border-bottom: none;
+}
+
+
+/*
+  Valor financeiro total
+  daquela categoria.
+*/
+.category-item strong {
+  color: #dc2626;
+
+  font-size: 15px;
+}
+/* =========================================================
+   RESPONSIVIDADE
+   Adapta a interface para telas menores.
+   ========================================================= */
+
+/*
+  @media aplica essas regras somente
+  quando a tela possuir até 800px de largura.
+
+  Em telas pequenas, os três cards deixam
+  de ficar lado a lado e passam a ficar
+  um abaixo do outro.
+*/
 @media (max-width: 800px) {
   .financial-summary {
     grid-template-columns: 1fr;
