@@ -699,6 +699,47 @@ button,
 
   font-size: 15px;
 }
+/* Formulário e lista do FinUp compartilham a largura dos indicadores. */
+.financial-entry-panel,
+.financial-entries-panel {
+  max-width: 900px;
+  margin-top: 28px;
+  padding: 26px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+.financial-entry-panel h2,
+.financial-entries-panel h2 { margin: 0 0 12px; font-size: 20px; }
+.financial-entry-panel p { color: var(--gray); }
+/* Cada campo tem rótulo próprio; o grid se adapta à largura disponível. */
+.financial-entry-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+}
+.financial-entry-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.financial-entry-form input,
+.financial-entry-form select {
+  width: 100%; padding: 11px; border: 1px solid var(--gray-light);
+  border-radius: 8px; background: white;
+}
+.financial-entry-form button {
+  align-self: end; min-height: 43px; padding: 10px 16px;
+  border: 0; border-radius: 8px; color: white;
+  background: var(--blue-dark); cursor: pointer;
+}
+.financial-entry-form button:hover { background: #005f91; }
+/* A lista identifica a origem e destaca entradas e saídas. */
+.financial-entries-list { padding: 0; margin: 0; list-style: none; }
+.financial-entries-list li {
+  display: flex; justify-content: space-between; gap: 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--gray-light);
+}
+.financial-entries-list li:last-child { border-bottom: 0; }
+.financial-entries-list small { display: block; margin-top: 4px; color: var(--gray); }
+.entry-income { color: #059669; }
+.entry-expense { color: #dc2626; }
 /* =========================================================
    RESPONSIVIDADE
    Adapta a interface para telas menores.
@@ -713,6 +754,8 @@ button,
   um abaixo do outro.
 */
 @media (max-width: 800px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .app-content { padding: 24px; }
   .financial-summary {
     grid-template-columns: 1fr;
   }
