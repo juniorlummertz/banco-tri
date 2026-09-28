@@ -7,8 +7,10 @@ import { mockApi } from "./mock/mockApi"
   as operações para o Supabase.
 */
 
+// O protótipo abre com dados demonstrativos sem exigir configuração.
+// A opção "false" fica reservada para quando a integração real existir.
 const useMock =
-  import.meta.env.VITE_USE_MOCK === "true"
+  import.meta.env.VITE_USE_MOCK !== "false"
 /*
   A camada API serve como ponto de acesso aos dados.
 

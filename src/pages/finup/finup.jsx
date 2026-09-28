@@ -1,99 +1,65 @@
-import { useAccount } from "../../hooks/useAccount"
 import { formatCurrency } from "../../utils/currency"
-import { calculateFinancialSummary, calculateExpensesByCategory } from "../../services/finup/financialService"
-import CategorySummary from "../../components/finup/categorySummary"
-/*
-  Página inicial do módulo FinUp.
+import { useFinancialEntries } from "../../features/finup/finance/hooks/useFinancialEntries"
+import { calculateFinancialSummary, calculateExpensesByCategory } from "../../features/finup/finance/services/financialService"
+import CategorySummary from "../../features/finup/finance/components/CategorySummary"
+import FinancialEntryForm from "../../features/finup/finance/components/FinancialEntryForm"
 
-  Diferente do Dashboard bancário,
-  o FinUp interpreta as movimentações
-  para produzir informações financeiras.
-
-  Exemplo:
-  Banco Tri -> registra uma compra
-  FinUp     -> interpreta essa compra como despesa.
-*/
+/* Página do FinUp: interpreta transações bancárias e lançamentos próprios.
+   O Dashboard bancário continua lendo apenas as transações do Banco TRI. */
 export default function FinUp() {
-  /*
-    Reutilizamos o mesmo hook usado pelo Dashboard.
+  const { entries, loading, error, addEntry } = useFinancialEntries()
 
-    Isso significa que Banco Tri e FinUp
-    trabalham sobre a mesma fonte de transações.
-  */
-    const {transactions, loading, error} = useAccount()  
-   /*
-    Enquanto os dados ainda não chegaram,
-    mostramos uma mensagem temporária.
-  */
-        if (loading) {
-        return <p>Carregando dados financeiros...</p>
-        }
-        /*
-    Caso ocorra erro no carregamento,
-    interrompemos a renderização normal.
-  */
-        if (error) {
-        return <p>Erro: {error}</p>
-        }
-       /*
-    A página não realiza os cálculos financeiros.
+  if (loading) return <p>Carregando dados financeiros...</p>
+  if (error) return <p>Erro: {error}</p>
 
-    Ela envia as transações para financialService,
-    que devolve:
+  // Cálculos ficam no serviço; esta página organiza e exibe os resultados.
+  const { totalIncome, totalExpenses, balance } = calculateFinancialSummary(entries)
+  const expensesByCategory = calculateExpensesByCategory(entries)
 
-    - total de receitas;
-    - total de despesas;
-    - resultado.
+  return (
+    <div className="finup-page">
+      <header className="dashboard-header">
+        <span className="section-label">FinUp</span>
+        <h1>Visão financeira</h1>
+        <p>Acompanhe suas receitas, despesas e o resultado dos lançamentos exibidos.</p>
+      </header>
 
-    Isso separa apresentação de regra de negócio.
-  */
-        const { totalIncome, totalExpenses, balance } = calculateFinancialSummary(transactions)
-        /*o mesmo conjunto de transações também é enviado para outra regra do financialService.
-          Dessa vez queremos descobrir quanto foi gasto em cada categoria. */
-        const expensesByCategory = calculateExpensesByCategory(transactions)
-        {formatCurrency(balance)} /*adicionado para exibir o saldo formatado*/
-        return (<div className="finup-page"> {/* Cabeçalho principal do módulo FinUp */}
-            <header className="dashboard-header">
-                <span className="section-label">FinUp</span>
-                <h1>
-                Visão financeira
-                </h1>
-                <p>
-                Acompanhe suas receitas, despesas
-                e o resultado do período.
-                </p>
-            </header>
-            {/*
-        Resumo financeiro.
+      {/* Indicadores recebem números já calculados, sem acessar armazenamento. */}
+      <section className="financial-summary" aria-label="Resumo financeiro">
+        <article className="financial-card income">
+          <span>Receitas</span><strong>{formatCurrency(totalIncome)}</strong>
+        </article>
+        <article className="financial-card expense">
+          <span>Despesas</span><strong>{formatCurrency(totalExpenses)}</strong>
+        </article>
+        <article className="financial-card balance">
+          <span>Resultado</span><strong>{formatCurrency(balance)}</strong>
+        </article>
+      </section>
 
-        Cada article representa um indicador
-        independente da visão financeira.
-            */}
-            <section className="financial-summary">
-              {/* Total de entradas financeiras */}
-             <article className="financial-card income">
-              <span>Receitas</span>
-                <strong>
-                {formatCurrency(totalIncome)}
+      {/* O formulário salva apenas lançamentos locais do FinUp. */}
+      <FinancialEntryForm onAdd={addEntry} />
+      <CategorySummary expensesByCategory={expensesByCategory} />
+
+      {/* Mostrar a origem torna explícito o que entrou nos totais. */}
+      <section className="financial-entries-panel" aria-labelledby="entries-title">
+        <h2 id="entries-title">Lançamentos considerados</h2>
+        {entries.length === 0 ? <p>Nenhum lançamento registrado.</p> : (
+          <ul className="financial-entries-list">
+            {entries.map((entry) => (
+              <li key={entry.id}>
+                <span>
+                  <strong>{entry.description}</strong>
+                  <small>{entry.date} · {entry.source === "bank" ? "Banco TRI" : "FinUp"}</small>
+                </span>
+                <strong className={entry.type === "income" ? "entry-income" : "entry-expense"}>
+                  {entry.type === "income" ? "+" : "−"}{formatCurrency(entry.amount)}
                 </strong>
-             </article>
-              {/* Total de saídas financeiras */}
-             <article className="financial-card expense">
-              <span>Despesas</span>
-               <strong>
-               {formatCurrency(totalExpenses)}
-               </strong>
-             </article>
-              {/*Diferença entre receitas e despesas: resultado = receitas - despesas*/}
-             <article className="financial-card balance">
-              <span>Resultado</span>
-               <strong>
-               {formatCurrency(balance)}
-               </strong>
-             </article>
-            </section>
-            {/*a página entrega ao componente os valores que já foram calculados pelo financialService.
-              CategorySummary não precisa conhecer a lista original de transações.*/}
-          <CategorySummary expensesByCategory={expensesByCategory}/>
-        </div>)
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+  )
 }
