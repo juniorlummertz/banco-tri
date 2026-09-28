@@ -14,7 +14,11 @@ export function mapBankTransaction(transaction) {
 
 /* Valida no domínio, além das restrições visuais do formulário. */
 export function createManualEntry(values, id) {
-  const amount = Number(values.amount)
+  // Aceita vírgula decimal para o público brasileiro, sem tolerar milhares
+  // ambíguos ou frações menores que um centavo.
+  const rawAmount = String(values.amount).trim()
+  const validAmount = /^\d+(?:[,.]\d{1,2})?$/.test(rawAmount)
+  const amount = Number(rawAmount.replace(",", "."))
   const description = values.description.trim()
   const date = values.date
   const [year, month, day] = date.split("-").map(Number)
@@ -23,7 +27,7 @@ export function createManualEntry(values, id) {
   const validCategory = values.type === "income" ||
     ["food", "housing", "transport", "health", "education", "leisure", "subscriptions", "other"].includes(values.category)
   if (!description || !["income", "expense"].includes(values.type) ||
-      !Number.isFinite(amount) || amount <= 0 || Math.round(amount * 100) / 100 !== amount ||
+      !validAmount || !Number.isFinite(amount) || amount <= 0 ||
       !validDate || !validCategory) {
     throw new Error("Confira descrição, tipo, valor e data do lançamento.")
   }

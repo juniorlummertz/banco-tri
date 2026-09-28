@@ -9,11 +9,14 @@ export function useFinancialEntries() {
   const [manualEntries, setManualEntries] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   useEffect(() => {
     let active = true
     async function load() {
       try {
+        setLoading(true)
+        setError(null)
         const transactions = await api.getTransactions()
         const savedEntries = manualEntryRepository.list()
         if (active) {
@@ -28,7 +31,7 @@ export function useFinancialEntries() {
     }
     load()
     return () => { active = false }
-  }, [])
+  }, [refreshKey])
 
   function addEntry(values) {
     const entry = createManualEntry(values, crypto.randomUUID())
@@ -38,5 +41,5 @@ export function useFinancialEntries() {
   // O extrato mantém a própria origem; a ordenação serve só à lista do FinUp.
   const entries = [...bankEntries, ...manualEntries]
     .sort((a, b) => b.date.localeCompare(a.date))
-  return { entries, loading, error, addEntry }
+  return { entries, loading, error, addEntry, retry: () => setRefreshKey((current) => current + 1) }
 }

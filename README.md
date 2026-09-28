@@ -8,12 +8,13 @@ Protótipo acadêmico em React. O **Banco TRI** apresenta uma conta e movimenta�
 - Visão financeira do FinUp com receitas, despesas, resultado e despesas por categoria.
 - Cadastro manual de receita ou despesa, com categoria e data; listagem identifica a origem de cada lançamento.
 - Lançamentos manuais salvos no `localStorage` do navegador. Não são enviados ao Banco TRI, não sincronizam entre dispositivos e podem sumir se os dados do navegador forem apagados.
+- Telas carregadas por demanda, com esqueleto durante a espera, recuperação de erro e transições curtas. A interface respeita a preferência do sistema por movimento reduzido.
 
 Conteúdos de educação financeira, indicação **preliminar** de possíveis benefícios sociais e persistência remota estão previstos no projeto acadêmico, mas ainda não foram implementados. O pacote `@supabase/supabase-js` está instalado; **não existe integração com Supabase funcionando** nesta etapa. O protótipo não determina direito a benefícios nem substitui análise oficial.
 
 ## Tecnologias
 
-React, Vite, JavaScript, React Router, CSS e dados demonstrativos em JSON. Os testes das regras financeiras usam o executor de testes nativo do Node.js.
+React, Vite, JavaScript, React Router, Motion, CSS e dados demonstrativos em JSON. Os testes das regras financeiras usam o executor de testes nativo do Node.js.
 
 ## Executar localmente
 
