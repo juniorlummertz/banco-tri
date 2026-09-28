@@ -34,7 +34,29 @@ Para verificar alterações:
 npm run lint
 npm test
 npm run build
+npm run perf:budget
+npm audit --omit=dev --audit-level=high
+npx playwright install chromium
+npm run test:e2e
 ```
+
+## Esteira de qualidade
+
+O workflow `Quality / quality` roda em cada PR para `main` e após integração: instalação pelo lockfile, ESLint, testes de regras financeiras, build, orçamento de JS/CSS comprimidos, auditoria de dependências de produção (falha a partir de gravidade alta) e teste Playwright do fluxo Dashboard → FinUp → armazenamento local → Dashboard. O teste de navegador usa dados demonstrativos. O orçamento inicial é **150 KiB de JavaScript e 30 KiB de CSS, gzip**, somando todos os arquivos em `dist/assets`; mede tamanho de transferência aproximado, não métricas de execução. Alterações nesses limites devem trazer medidas e justificativa no PR.
+
+Para que os checks impeçam integração, um administrador precisa configurar um ruleset da `main` com **Require a pull request before merging**, ao menos uma revisão, **Require status checks to pass** com o check `quality`, sem bypass para os participantes habituais. Confira o nome do check após a primeira execução e mantenha a proteção ativa. O workflow sozinho não bloqueia push direto nem merge. A definição de hospedagem, prévia, publicação e reversão continua na Issue #14.
+
+### Escolhas proporcionais ao estágio atual
+
+| Área | Agora | Quando reavaliar |
+|---|---|---|
+| Qualidade | ESLint existente, testes Node e Playwright | Biome só se substituir ESLint; Commitlint com convenção de commits; Knip quando o código crescer; `arch-contract` quando fronteiras reais exigirem verificação automática; Stryker quando houver suíte estável e valor em mutação |
+| Testes | Unidade para regras e um fluxo integrado no navegador | Integração de API quando houver backend; Codecov se a equipe definir meta de cobertura; Endtest apenas se houver necessidade além do Playwright |
+| Observabilidade | Erros vistos em desenvolvimento e no CI; sem telemetria de usuários | Issue #21: após hospedagem e avaliação de dados, escolher Sentry **ou** Datadog **ou** New Relic conforme operação; OpenTelemetry quando houver serviços distribuídos e traces úteis |
+| Segurança | Auditoria de dependências em PR, revisão de dados/segredos no PR | Issue #22: API pública com rate limit no backend, autenticação/autorização e testes de abuso; revisão de segurança antes de produção |
+| Jurídico | Sem publicação de termos ou política como aprovados | Issue #23: revisão e aprovação do jurídico antes da coleta de dados pessoais ou publicação de textos legais |
+
+Mantenha páginas/componentes como interface, hooks como coordenação, serviços como regras e repositórios/API como acesso a dados. Reutilize componentes existentes; extraia uma abstração após repetição real e verifique desempenho com medidas antes de adicionar infraestrutura. Registre trabalhos novos em Issues classificadas e entregue por PR conforme `AGENTS.md`.
 
 ## Organização do código
 
