@@ -24,7 +24,7 @@
   posteriormente com var(--nome-da-variavel).
 */
 :root{
-    font-family: arial, helvetica, sans-serif;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
  
     color: #111827;
     background: #f4f7fb;
@@ -36,6 +36,10 @@
   --gray-light: #e5e7eb;
   --background: #f4f7fb;
   --white: #ffffff;
+  /* Tempos e curva da interação: rápidos para uma ferramenta financeira. */
+  --motion-fast: 160ms;
+  --motion-regular: 220ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 /*
   Configurações gerais da página.
@@ -205,7 +209,8 @@ button,
     Suaviza alterações visuais,
     como mudança de fundo no hover.
   */
-  transition: 0.2s;
+  min-height: 44px;
+  transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
 }
 /*
   :hover é aplicado quando o usuário
@@ -225,6 +230,20 @@ button,
 .sidebar-link.active {
   background: #009ee3;
   color: white;
+}
+.sidebar-note {
+  margin: auto 12px 0;
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 1.45;
+}
+/* A navegação pelo teclado dá resposta imediata, sem animação. */
+.sidebar-link:focus-visible,
+button:focus-visible { transition: none; }
+/* Foco visível sem depender de cor ou movimento. */
+:where(a, button, input, select):focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
 }
 /* =========================================================
    CARD DE SALDO
@@ -715,9 +734,11 @@ button,
 /* Cada campo tem rótulo próprio; o grid se adapta à largura disponível. */
 .financial-entry-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.field-description { grid-column: span 2; }
+.financial-entry-form button { grid-column: 3; }
 .financial-entry-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
 .financial-entry-form input,
 .financial-entry-form select {
@@ -725,11 +746,32 @@ button,
   border-radius: 8px; background: white;
 }
 .financial-entry-form button {
-  align-self: end; min-height: 43px; padding: 10px 16px;
+  align-self: end; min-height: 44px; padding: 10px 16px;
   border: 0; border-radius: 8px; color: white;
   background: var(--blue-dark); cursor: pointer;
 }
 .financial-entry-form button:hover { background: #005f91; }
+/* Durante o salvamento, a ação fica indisponível. A confirmação permanece
+   em texto e cor, inclusive se animações estiverem desativadas. */
+.financial-entry-form button,
+.state-panel button {
+  transition: background-color var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
+.financial-entry-form button:disabled { opacity: 0.65; cursor: progress; }
+.form-feedback {
+  display: inline-flex;
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  border-radius: 9px;
+  background: #e8f3fb;
+  color: #075985 !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+.form-feedback.success { background: #e7f8ef; color: #047857 !important; }
+.form-feedback.error { background: #fff0f0; color: #b91c1c !important; }
 /* A lista identifica a origem e destaca entradas e saídas. */
 .financial-entries-list { padding: 0; margin: 0; list-style: none; }
 .financial-entries-list li {
@@ -740,6 +782,52 @@ button,
 .financial-entries-list small { display: block; margin-top: 4px; color: var(--gray); }
 .entry-income { color: #059669; }
 .entry-expense { color: #dc2626; }
+/* Carregamento: superfícies estáticas que preservam a estrutura da página.
+   Não há brilho pulsante nem conteúdo falso anunciado ao leitor de tela. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.page-skeleton { max-width: 900px; }
+.skeleton-line,
+.skeleton-card,
+.skeleton-panel,
+.skeleton-balance {
+  background: #e3eaf2;
+  border-radius: 12px;
+}
+.skeleton-line { height: 14px; margin-bottom: 12px; }
+.skeleton-eyebrow { width: 84px; height: 11px; }
+.skeleton-title { width: min(58%, 320px); height: 32px; }
+.skeleton-subtitle { width: min(78%, 440px); margin-bottom: 30px; }
+.skeleton-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.skeleton-card { min-height: 126px; background: #e8eef5; }
+.skeleton-balance { max-width: 720px; height: 198px; margin: 24px 0; background: #dcebf5; }
+.skeleton-panel { height: 210px; margin-top: 28px; background: #e8eef5; }
+.skeleton-form { height: 222px; }
+/* Erro com uma ação de recuperação, em vez de texto solto na página. */
+.state-panel {
+  max-width: 720px; padding: 28px; border-radius: 18px;
+  background: white; box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+.state-panel h2 { margin: 0 0 8px; font-size: 21px; }
+.state-panel p { color: var(--gray); }
+.state-panel button {
+  min-height: 44px; padding: 10px 16px; border: 0; border-radius: 8px;
+  color: white; background: var(--blue-dark); cursor: pointer;
+}
+.state-panel button:hover { background: #005f91; }
+.empty-state { color: var(--gray); margin: 18px 0 2px; }
+/* Valores e descrições longos não forçam rolagem horizontal. */
+.financial-card strong,
+.balance-value { overflow-wrap: anywhere; }
+.financial-entries-list li span { min-width: 0; overflow-wrap: anywhere; }
+.financial-entries-list li > strong { flex-shrink: 0; text-align: right; }
+
+@media (hover: hover) and (pointer: fine) {
+  /* Só pressão por ponteiro recebe resposta tátil; teclado mantém ação direta. */
+  button:active:not(:focus-visible) { transform: scale(0.985); }
+}
 /* =========================================================
    RESPONSIVIDADE
    Adapta a interface para telas menores.
@@ -756,7 +844,45 @@ button,
 @media (max-width: 800px) {
   .app-layout { grid-template-columns: 1fr; }
   .app-content { padding: 24px; }
+  .sidebar {
+    flex-direction: row; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 14px; padding: 14px 24px;
+  }
+  .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
+  .sidebar-note { display: none; }
   .financial-summary {
     grid-template-columns: 1fr;
+  }
+  .skeleton-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .financial-entry-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field-description,
+  .financial-entry-form button { grid-column: auto; }
+}
+@media (max-width: 480px) {
+  .app-content { padding: 20px 16px; }
+  .sidebar { padding: 12px 16px; }
+  .sidebar-menu { width: 100%; }
+  .sidebar-link { flex: 1; justify-content: center; }
+  .transactions-panel,
+  .financial-entry-panel,
+  .financial-entries-panel,
+  .category-panel { padding: 20px; }
+  .transactions-header { align-items: flex-start; gap: 10px; }
+  .financial-entries-list li { flex-wrap: wrap; }
+  .financial-entries-list li > strong { width: 100%; text-align: left; }
+  .financial-entry-form { grid-template-columns: 1fr; }
+  .field-description,
+  .financial-entry-form button { grid-column: 1; }
+  .skeleton-form { height: 430px; }
+}
+/* Qualquer animação incluída acima tem um caminho sem movimento. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

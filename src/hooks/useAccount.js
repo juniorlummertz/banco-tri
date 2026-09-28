@@ -14,8 +14,10 @@ export function useAccount() {
 // Estados responsáveis pelo ciclo da requisição.
     const[loading, setLoading]=useState(true)
     const[error, setError]=useState(null)
+    const[refreshKey, setRefreshKey]=useState(0)
     
     useEffect(() => {
+         let active = true
          /*
       Funções assíncronas permitem aguardar dados externos
       sem bloquear a aplicação.
@@ -23,6 +25,7 @@ export function useAccount() {
         async function loadData() {
             try{
                 setLoading(true)
+                setError(null)
                  /*
           O hook não acessa diretamente o JSON.
           Ele depende da camada "api", que abstrai
@@ -31,26 +34,30 @@ export function useAccount() {
                 const userData=await api.getUser()
                 const accountData=await api.getAccount()
                 const transactionData=await api.getTransactions()
-                setUser(userData)
-                setAccount(accountData)
-                setTransactions(transactionData)
+                if (active) {
+                    setUser(userData)
+                    setAccount(accountData)
+                    setTransactions(transactionData)
+                }
             } catch (err) {
-                setError(err.message)
+                if (active) setError(err.message)
             } finally {
                  /*
           finally executa independentemente de sucesso
           ou erro, garantindo o encerramento do loading.
         */
-                setLoading(false)
+                if (active) setLoading(false)
             }
         }
         loadData()
-    }, [])
+        return () => { active = false }
+    }, [refreshKey])
     return {
         user,
         account,
         transactions,
         loading,
-        error
+        error,
+        retry: () => setRefreshKey((current) => current + 1)
     }
 }

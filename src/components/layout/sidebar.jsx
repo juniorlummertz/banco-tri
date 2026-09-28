@@ -1,26 +1,14 @@
 import { NavLink } from "react-router-dom"
 
-import { Home, QrCode, ArrowLeftRight, CreditCard, UserRound,  ChartNoAxesCombined } from "lucide-react"
+import { Home, ChartNoAxesCombined } from "lucide-react"
 
 const menuItems = [{
     name: "Início",
     path: "/dashboard",
     icon: Home}, {
-    name: "Pix",
-    path: "/pix",
-    icon: QrCode}, {
-    name: "Transferências",
-    path: "/transferencias",
-    icon: ArrowLeftRight}, {
-    name: "Cartões",
-    path: "/cartoes",
-    icon: CreditCard}, {
     name: "FinUp",
     path: "/finup",
-    icon: ChartNoAxesCombined}, {
-    name: "Perfil",
-    path: "/perfil",
-    icon: UserRound}
+    icon: ChartNoAxesCombined}
 ]
 
 export default function Sidebar() {
@@ -36,7 +24,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="sidebar-menu">
+      <nav className="sidebar-menu" aria-label="Páginas disponíveis">
         {menuItems.map((item) => {
           const Icon = item.icon
             return (
@@ -47,7 +35,7 @@ export default function Sidebar() {
                 isActive
                   ? "sidebar-link active"
                   : "sidebar-link"}>
-              <Icon size={20} />
+              <Icon size={20} aria-hidden="true" />
                 <span>
                 {item.name}
                 </span>
@@ -55,6 +43,7 @@ export default function Sidebar() {
           )
         })}
       </nav>
+      <p className="sidebar-note">Protótipo acadêmico · dados demonstrativos</p>
       </aside>
   )
 }
