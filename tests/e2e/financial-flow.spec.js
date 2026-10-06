@@ -2,6 +2,8 @@ import { test, expect } from "@playwright/test"
 
 test("lançamento do FinUp persiste sem alterar o extrato do Banco TRI", async ({ page }) => {
   await page.goto("/dashboard")
+  await expect(page).toHaveURL(/\/$/)
+  await page.getByRole("button", { name: "Entrar na conta" }).click()
   await expect(page.getByRole("heading", { name: "Olá, Junior Lummertz" })).toBeVisible()
   await expect(page.getByText("Supermercado")).toBeVisible()
 
@@ -29,7 +31,7 @@ test("lançamento do FinUp persiste sem alterar o extrato do Banco TRI", async (
   await page.getByRole("button", { name: "Confirmar exclusão" }).click()
   await expect(page.getByText("Material da oficina")).toHaveCount(0)
 
-  await page.getByRole("link", { name: "Início" }).click()
+  await page.getByRole("link", { name: "Visão geral" }).click()
   await expect(page.getByRole("heading", { name: "Olá, Junior Lummertz" })).toBeVisible()
   await expect(page.getByText("Supermercado")).toBeVisible()
   await expect(page.getByText("Despesa de teste")).toHaveCount(0)
@@ -38,4 +40,8 @@ test("lançamento do FinUp persiste sem alterar o extrato do Banco TRI", async (
   await expect(page.getByText("Supermercado")).toHaveCount(0)
   await page.getByLabel("Tipo de movimentação").selectOption("credit")
   await expect(page.getByText("Nenhuma movimentação corresponde aos filtros.")).toBeVisible()
+  await page.getByRole("button", { name: "Sair da demonstração" }).click()
+  await expect(page.getByRole("button", { name: "Entrar na conta" })).toBeVisible()
+  await page.goto("/finup")
+  await expect(page).toHaveURL(/\/$/)
 })

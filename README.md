@@ -4,6 +4,8 @@ Protótipo acadêmico em React. O **Banco TRI** apresenta uma conta e movimenta�
 
 ## Estado atual
 
+- Tela inicial de entrada demonstrativa e sessão temporária por aba, com opção de sair. **Não há autenticação real:** não informa senha, não verifica identidade e não protege dados privados.
+- Identidades visuais distintas: Banco TRI em azul, branco e preto com geometria original; FinUp em verde profundo/turquesa conforme a apresentação da equipe. Páginas sob demanda, esqueleto de carregamento e animações discretas com suporte a movimento reduzido.
 - Dashboard do Banco TRI com conta fictícia, resumo de entradas/saídas e extrato demonstrativo pesquisável por descrição e tipo.
 - Visão financeira do FinUp com receitas, despesas, resultado e despesas por categoria.
 - Cadastro, edição e exclusão com confirmação de receitas/despesas manuais, com categoria e data; listagem identifica a origem de cada lançamento. Transações do banco permanecem somente para leitura no FinUp.
@@ -28,7 +30,7 @@ npm ci
 npm run dev
 ```
 
-Abra o endereço mostrado pelo Vite e navegue entre **Dashboard** e **FinUp**. Os dados demonstrativos são usados por padrão. A variável `VITE_USE_MOCK=false` está reservada para uma integração futura e, por enquanto, produz erro informando que o Supabase não foi configurado.
+Abra o endereço mostrado pelo Vite, clique em **Entrar na conta** para acessar a demonstração e navegue entre **Visão geral** e **FinUp**. A sessão existe apenas na aba atual; sair encerra o acesso demonstrativo. Ela não substitui login com backend, controle de acesso ou isolamento de usuários. Os dados demonstrativos são usados por padrão. A variável `VITE_USE_MOCK=false` está reservada para uma integração futura e, por enquanto, produz erro informando que o Supabase não foi configurado.
 
 ### Roteiro curto de demonstração
 

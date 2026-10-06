@@ -4,6 +4,8 @@ import { useFinancialEntries } from "../../features/finup/finance/hooks/useFinan
 import { calculateFinancialSummary, calculateExpensesByCategory } from "../../features/finup/finance/services/financialService"
 import CategorySummary from "../../features/finup/finance/components/CategorySummary"
 import FinancialEntryForm from "../../features/finup/finance/components/FinancialEntryForm"
+import LoadingScreen from "../../components/layout/LoadingScreen"
+import { ArrowDownLeft, ArrowUpRight, ChartPie, Leaf, ShieldCheck } from "lucide-react"
 
 function formatDate(date) {
   return new Intl.DateTimeFormat("pt-BR").format(new Date(`${date}T12:00:00`))
@@ -17,7 +19,7 @@ export default function FinUp() {
   const [pendingDeleteId, setPendingDeleteId] = useState(null)
   const [feedback, setFeedback] = useState("")
 
-  if (loading) return <p role="status">Carregando dados financeiros...</p>
+  if (loading) return <LoadingScreen finup />
   if (error) return <p role="alert">Erro: {error}</p>
 
   const { totalIncome, totalExpenses, balance } = calculateFinancialSummary(entries)
@@ -47,24 +49,23 @@ export default function FinUp() {
 
   return (
     <div className="finup-page">
-      <header className="dashboard-header">
-        <span className="section-label">FinUp · organização financeira</span>
-        <h1>Visão financeira</h1>
-        <p>Acompanhe receitas, despesas e decisões de orçamento em uma demonstração.</p>
+      <div className="page-topline"><span>FINUP <span className="topline-slash">/</span> ORGANIZAÇÃO FINANCEIRA</span><span className="demo-badge"><span className="status-dot" /> DEMONSTRAÇÃO</span></div>
+      <header className="finup-hero">
+        <div className="finup-hero-copy"><span className="finup-hero-tag"><Leaf size={15} aria-hidden="true" /> FINUP · EDUCAÇÃO FINANCEIRA</span><h1>Visão financeira<span>.</span></h1><p>Uma forma mais clara de entender receitas, despesas e planejar o que vem pela frente.</p></div><div className="finup-hero-art" aria-hidden="true"><span /><span /><span /></div>
       </header>
 
       <section className="financial-summary" aria-label="Resumo financeiro">
         <article className="financial-card income">
-          <span>Receitas consideradas</span><strong>{formatCurrency(totalIncome)}</strong>
+          <span className="summary-icon income-icon"><ArrowDownLeft size={20} aria-hidden="true" /></span><span>Receitas consideradas</span><strong>{formatCurrency(totalIncome)}</strong><small>Entradas do recorte</small>
         </article>
         <article className="financial-card expense">
-          <span>Despesas consideradas</span><strong>{formatCurrency(totalExpenses)}</strong>
+          <span className="summary-icon expense-icon"><ArrowUpRight size={20} aria-hidden="true" /></span><span>Despesas consideradas</span><strong>{formatCurrency(totalExpenses)}</strong><small>Saídas do recorte</small>
         </article>
         <article className="financial-card balance">
-          <span>Resultado do recorte</span><strong>{formatCurrency(balance)}</strong>
+          <span className="summary-icon activity-icon"><ChartPie size={20} aria-hidden="true" /></span><span>Resultado do recorte</span><strong>{formatCurrency(balance)}</strong><small>Para acompanhar de perto</small>
         </article>
       </section>
-      <p className="summary-note">O resultado soma o extrato fictício e seus lançamentos locais; não é o saldo da conta do Banco TRI.</p>
+      <p className="summary-note"><ShieldCheck size={16} aria-hidden="true" /> Soma do extrato fictício e dos lançamentos locais. Não representa o saldo do Banco TRI.</p>
 
       <FinancialEntryForm
         key={editingEntry?.id ?? "new"}

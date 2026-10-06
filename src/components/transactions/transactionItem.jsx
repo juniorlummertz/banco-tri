@@ -1,5 +1,6 @@
 import { formatCurrency } from "../../utils/currency"
 import { getCategoryLabel } from "../../utils/category"
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react"
 /*
   Representa visualmente uma única movimentação financeira.
 
@@ -14,7 +15,7 @@ export default function TransactionItem({ transaction }) {
   )
   return (
     <li className="transaction-item">
-
+      <span className={`transaction-icon ${isCredit ? "credit" : "debit"}`} aria-hidden="true">{isCredit ? <ArrowDownLeft size={19} /> : <ArrowUpRight size={19} />}</span>
       <div className="transaction-details">
         <strong>
           {transaction.description}

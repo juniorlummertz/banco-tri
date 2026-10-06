@@ -1,14 +1,12 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import Sidebar from "./sidebar"
 
-export default function AppLayout() {
+export default function AppLayout({ onExit }) {
+  const isFinup = useLocation().pathname.startsWith("/finup")
   return (
-    <div className="app-layout">
-        <Sidebar />
-        <main className="app-content">
-        <Outlet />
-        </main>
-
+    <div className={`app-layout ${isFinup ? "theme-finup" : "theme-bank"}`}>
+      <Sidebar onExit={onExit} />
+      <main className="app-content" id="main-content"><Outlet /></main>
     </div>
   )
 }
