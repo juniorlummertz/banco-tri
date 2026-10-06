@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { api } from "../../../../services/api"
-import { createManualEntry, mapBankTransaction } from "../services/financialEntry"
+import { createManualEntry, mapBankTransaction, reviseManualEntry } from "../services/financialEntry"
 import { manualEntryRepository } from "../repositories/manualEntryRepository"
 
 /* Coordena as duas fontes de dados. Só o FinUp conhece os lançamentos manuais. */
@@ -35,8 +35,16 @@ export function useFinancialEntries() {
     setManualEntries(manualEntryRepository.add(entry))
   }
 
+  function updateEntry(entry, values) {
+    setManualEntries(manualEntryRepository.update(reviseManualEntry(entry, values)))
+  }
+
+  function deleteEntry(id) {
+    setManualEntries(manualEntryRepository.remove(id))
+  }
+
   // O extrato mantém a própria origem; a ordenação serve só à lista do FinUp.
   const entries = [...bankEntries, ...manualEntries]
     .sort((a, b) => b.date.localeCompare(a.date))
-  return { entries, loading, error, addEntry }
+  return { entries, loading, error, addEntry, updateEntry, deleteEntry }
 }

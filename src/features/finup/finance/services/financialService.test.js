@@ -1,7 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import { calculateFinancialSummary, calculateExpensesByCategory } from "./financialService.js"
-import { createManualEntry, mapBankTransaction } from "./financialEntry.js"
+import { createManualEntry, mapBankTransaction, reviseManualEntry } from "./financialEntry.js"
 import { manualEntryRepository } from "../repositories/manualEntryRepository.js"
 
 test("extrato demonstrativo e registro manual usam o mesmo modelo financeiro", () => {
@@ -57,7 +57,27 @@ test("um lançamento manual persiste no navegador sem alterar transações banc�
     manualEntryRepository.add(entry)
     assert.deepEqual(manualEntryRepository.list(), [entry])
     assert.equal(manualEntryRepository.list()[0].source, "manual")
+
+    const revised = reviseManualEntry(entry, {
+      description: "Ônibus", amount: "12,50", type: "expense",
+      category: "transport", date: "2026-09-14",
+    })
+    manualEntryRepository.update(revised)
+    assert.equal(manualEntryRepository.list()[0].id, entry.id)
+    assert.equal(calculateFinancialSummary(manualEntryRepository.list()).totalExpenses, 12.5)
+    assert.deepEqual(calculateExpensesByCategory(manualEntryRepository.list()), { transport: 12.5 })
+    assert.throws(() => reviseManualEntry({ ...entry, source: "bank" }, { amount: "1" }), /Apenas/)
+    assert.throws(() => manualEntryRepository.remove("bank:transaction-001"), /Apenas/)
+    assert.deepEqual(manualEntryRepository.remove(entry.id), [])
+    assert.deepEqual(manualEntryRepository.list(), [])
   } finally {
     globalThis.localStorage = previousStorage
   }
+})
+
+test("recusa formatos inválidos e aceita centavos com vírgula", () => {
+  const values = { description: "Material", amount: "19,90", type: "expense", category: "education", date: "2026-09-13" }
+  assert.equal(createManualEntry(values, "c1").amount, 19.9)
+  assert.throws(() => createManualEntry({ ...values, amount: "1e3" }, "c1"), /Confira/)
+  assert.throws(() => createManualEntry({ ...values, amount: "19,999" }, "c1"), /Confira/)
 })

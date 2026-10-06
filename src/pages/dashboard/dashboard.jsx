@@ -1,136 +1,76 @@
+import { useState } from "react"
 import { useAccount } from "../../hooks/useAccount"
 import BalanceCard from "../../components/account/balanceCard"
 import TransactionList from "../../components/transactions/transactionList"
-/*
-  Página principal da área bancária.
+import { filterTransactions, summarizeTransactions } from "../../services/transactionService"
+import { formatCurrency } from "../../utils/currency"
 
-  Responsabilidades:
-  - obter os dados da conta através do useAccount;
-  - controlar estados de carregamento e erro;
-  - organizar os componentes visuais da página.
-
-  A página não acessa diretamente o JSON ou banco de dados.
-  Essa responsabilidade fica nas camadas inferiores.
-*/
+/* O Dashboard organiza a conta e o extrato; regras e acesso a dados ficam fora da página. */
 export default function Dashboard() {
-    /*
-    Desestrutura os dados disponibilizados
-    pelo hook customizado useAccount.
-    */
-    const {
-        user,
-        account,
-        transactions,
-        loading,
-        error
-    } = useAccount()
-    /*
-    Renderização condicional.
+  const { user, account, transactions, loading, error } = useAccount()
+  const [query, setQuery] = useState("")
+  const [direction, setDirection] = useState("all")
 
-    Enquanto os dados ainda estão sendo carregados,
-    não tentamos mostrar conta ou transações.
-  */
-    if(loading) {
-        return(
-            <div>
-                <p>Carregando  dados...</p>
-            </div>
-        )
-    } 
-    /*
-    Se ocorrer algum problema durante
-    o carregamento dos dados,
-    apresentamos a mensagem de erro.
-    */
+  if (loading) return <p role="status">Carregando dados demonstrativos...</p>
+  if (error) return <p role="alert">Erro: {error}</p>
+  if (!user || !account) return <p role="alert">Dados da conta não encontrados.</p>
 
-    if (error) {
-        return(
-            <div>
-                <p>Erro: {error}</p>
-            </div>
-        )
-    }
-    /*
-    Proteção adicional.
+  // Os indicadores descrevem somente o recorte fictício do extrato.
+  const summary = summarizeTransactions(transactions)
+  const visibleTransactions = filterTransactions(transactions, query, direction)
 
-    Mesmo sem erro, verificamos se os dados
-    fundamentais realmente foram encontrados.
-  */
-    if (!user || !account){
-        return(
-            <div>
-                <p>Dados da conta não encontrado.</p>
-            </div>
-        )
-    }
-    return (
-        <div>
-            {/*
-        Cabeçalho da página.
+  return (
+    <div className="dashboard-page">
+      <header className="dashboard-header">
+        <span className="section-label">Visão geral · demonstração</span>
+        <h1>Olá, {user.name}</h1>
+        <p>Explore uma conta fictícia e veja como as movimentações chegam ao FinUp.</p>
+      </header>
 
-        O nome do usuário vem dos dados carregados
-        pelo useAccount.
-      */}
-         <header className="dashboard-header">
+      <BalanceCard account={account} />
 
-            <span className="section-label">
-                Visão geral
-            </span>
+      <section className="bank-summary" aria-label="Resumo do extrato demonstrativo">
+        <article className="bank-summary-card">
+          <span>Entradas no extrato</span>
+          <strong className="entry-income">{formatCurrency(summary.credits)}</strong>
+        </article>
+        <article className="bank-summary-card">
+          <span>Saídas no extrato</span>
+          <strong className="entry-expense">{formatCurrency(summary.debits)}</strong>
+        </article>
+        <article className="bank-summary-card">
+          <span>Movimentações</span>
+          <strong>{summary.count}</strong>
+        </article>
+      </section>
+      <p className="summary-note">Valores do recorte demonstrativo; o saldo da conta não é calculado a partir desta lista.</p>
 
-            <h1>
-                Olá, {user.name}
-            </h1>
+      <section className="transactions-panel" aria-labelledby="transactions-title">
+        <div className="transactions-header">
+          <div>
+            <span className="section-label">Extrato fictício</span>
+            <h2 id="transactions-title">Movimentações</h2>
+          </div>
+          <span className="transaction-count">{visibleTransactions.length} de {summary.count}</span>
+        </div>
 
-            <p>
-                Acompanhe sua conta e suas movimentações.
-            </p>
+        <div className="transaction-filters">
+          <label>
+            Buscar movimentação
+            <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ex.: supermercado" />
+          </label>
+          <label>
+            Tipo de movimentação
+            <select value={direction} onChange={(event) => setDirection(event.target.value)}>
+              <option value="all">Todas</option>
+              <option value="credit">Entradas</option>
+              <option value="debit">Saídas</option>
+            </select>
+          </label>
+        </div>
 
-        </header>
-        {/*
-        Componente responsável apenas
-        por apresentar informações da conta.
-
-        O objeto account é enviado através de props.
-      */}
-            <BalanceCard account={account}/>
-            {/*
-        Painel responsável pela área de extrato.
-      */}
-
-            <section className="transactions-panel">
-
-  <div className="transactions-header">
-
-    <div>
-      <span className="section-label">
-        Extrato
-      </span>
-
-      <h2>
-        Últimas movimentações
-      </h2>
+        <TransactionList transactions={visibleTransactions} />
+      </section>
     </div>
-            {/*
-            O tamanho do array informa
-            quantas movimentações foram carregadas.
-          */}
-    <span className="transaction-count">
-      {transactions.length} movimentações
-    </span>
-
-  </div>
-        {/*
-          O Dashboard não precisa saber
-          como cada transação será desenhada.
-
-          Ele envia a lista para TransactionList,
-          que delega cada item para TransactionItem.
-        */}
-  <TransactionList
-    transactions={transactions}
-  />
-
-</section>
-        </div>    
-    )
+  )
 }

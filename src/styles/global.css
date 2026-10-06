@@ -378,6 +378,9 @@ button,
   display: flex;
 
   flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 /*
   Representa uma única movimentação.
@@ -740,6 +743,69 @@ button,
 .financial-entries-list small { display: block; margin-top: 4px; color: var(--gray); }
 .entry-income { color: #059669; }
 .entry-expense { color: #dc2626; }
+/* O resumo do Banco TRI descreve apenas o extrato fictício mostrado. */
+.dashboard-page { max-width: 900px; }
+.bank-summary {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px; max-width: 720px;
+}
+.bank-summary-card {
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 0; padding: 20px; border-radius: 16px;
+  background: white; box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+.bank-summary-card span { color: var(--gray); font-size: 13px; }
+.bank-summary-card strong { font-size: 22px; overflow-wrap: anywhere; }
+.summary-note { max-width: 720px; margin: 12px 0 0; color: var(--gray); font-size: 13px; line-height: 1.5; }
+/* Busca e seletor funcionam com teclado, inclusive quando o filtro fica vazio. */
+.transaction-filters {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr);
+  gap: 14px; margin: 0 0 12px;
+}
+.transaction-filters label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; }
+.transaction-filters input,
+.transaction-filters select {
+  width: 100%; min-height: 44px; padding: 10px 12px;
+  border: 1px solid var(--gray-light); border-radius: 9px;
+  background: white; color: var(--black); font: inherit;
+}
+.transaction-details { min-width: 0; overflow-wrap: anywhere; }
+.transaction-value { flex-shrink: 0; }
+.empty-state { margin: 16px 0 0; color: var(--gray); }
+/* Ações manuais aparecem apenas nos registros do FinUp. */
+.financial-entry-form button,
+.entry-actions button,
+.delete-confirmation button {
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.financial-entry-form .secondary-button {
+  background: #e8eef5; color: var(--blue-dark);
+}
+.financial-entry-form .secondary-button:hover { background: #d9e7f2; }
+.financial-entries-list li { flex-wrap: wrap; align-items: flex-start; }
+.entry-description { min-width: 0; overflow-wrap: anywhere; }
+.entry-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+.entry-actions { display: flex; gap: 8px; }
+.entry-actions button,
+.delete-confirmation button {
+  min-height: 40px; padding: 7px 10px;
+  border: 1px solid #c9d8e5; border-radius: 8px;
+  background: white; color: #075985; cursor: pointer; font: inherit;
+}
+.entry-actions button:hover,
+.delete-confirmation button:hover { background: #e8f3fb; }
+.delete-confirmation {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+  width: 100%; padding: 12px; border-radius: 9px;
+  background: #fff3f2; color: #7f1d1d;
+}
+.delete-confirmation .danger-button { background: #b91c1c; border-color: #b91c1c; color: white; }
+.delete-confirmation .danger-button:hover { background: #991b1b; }
+.action-feedback { max-width: 900px; padding: 12px 16px; border-radius: 9px; background: #e7f8ef; color: #047857; }
+.list-description { margin: 0 0 12px; color: var(--gray); font-size: 14px; line-height: 1.5; }
+.financial-card strong,
+.balance-value { overflow-wrap: anywhere; }
+:where(button, input, select, a):focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
 /* =========================================================
    RESPONSIVIDADE
    Adapta a interface para telas menores.
@@ -756,7 +822,31 @@ button,
 @media (max-width: 800px) {
   .app-layout { grid-template-columns: 1fr; }
   .app-content { padding: 24px; }
+  .sidebar { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding: 16px 24px; }
+  .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
   .financial-summary {
     grid-template-columns: 1fr;
   }
+  .bank-summary { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .app-content { padding: 22px 16px; }
+  .sidebar { padding: 14px 16px; }
+  .sidebar-menu { width: 100%; }
+  .sidebar-link { flex: 1; justify-content: center; }
+  .transaction-filters { grid-template-columns: 1fr; }
+  .financial-entries-list li { gap: 10px; }
+  .entry-side { align-items: flex-start; width: 100%; }
+  .transactions-panel,
+  .financial-entry-panel,
+  .financial-entries-panel,
+  .category-panel { padding: 20px; }
+  .dashboard-header h1 { font-size: 28px; }
+  .balance-value { font-size: 30px; }
+  .account-info { flex-wrap: wrap; gap: 8px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .financial-entry-form button,
+  .entry-actions button,
+  .delete-confirmation button { transition: none; }
 }

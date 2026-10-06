@@ -8,15 +8,22 @@ const expenseCategories = [
   ["subscriptions", "Assinaturas"], ["other", "Outros"],
 ]
 
-function initialValues() {
+function initialValues(entry) {
+  if (entry) return {
+    description: entry.description,
+    amount: entry.amount.toFixed(2).replace(".", ","),
+    type: entry.type,
+    category: entry.type === "expense" ? entry.category : "food",
+    date: entry.date,
+  }
   const now = new Date()
   const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
   return { description: "", amount: "", type: "expense", category: "food", date: localDate.toISOString().slice(0, 10) }
 }
 
 /* Formulário controlado: validação final e armazenamento ficam fora da interface. */
-export default function FinancialEntryForm({ onAdd }) {
-  const [values, setValues] = useState(initialValues)
+export default function FinancialEntryForm({ onSave, entry = null, onCancel }) {
+  const [values, setValues] = useState(() => initialValues(entry))
   const [message, setMessage] = useState("")
 
   function change(event) {
@@ -27,9 +34,11 @@ export default function FinancialEntryForm({ onAdd }) {
   function submit(event) {
     event.preventDefault()
     try {
-      onAdd(values)
-      setValues(initialValues())
-      setMessage("Lançamento adicionado ao FinUp.")
+      onSave(values)
+      if (!entry) {
+        setValues(initialValues())
+        setMessage("Lançamento adicionado ao FinUp.")
+      }
     } catch (err) {
       setMessage(err.message)
     }
@@ -37,7 +46,7 @@ export default function FinancialEntryForm({ onAdd }) {
 
   return (
     <section className="financial-entry-panel" aria-labelledby="add-entry-title">
-      <h2 id="add-entry-title">Adicionar receita ou despesa</h2>
+      <h2 id="add-entry-title">{entry ? "Editar lançamento do FinUp" : "Adicionar receita ou despesa"}</h2>
       <p>Os lançamentos ficam salvos neste navegador e não alteram a conta do Banco TRI.</p>
       <form onSubmit={submit} className="financial-entry-form">
         <label>Tipo
@@ -46,10 +55,10 @@ export default function FinancialEntryForm({ onAdd }) {
           </select>
         </label>
         <label>Descrição
-          <input name="description" value={values.description} onChange={change} maxLength="100" required placeholder="Ex.: aluguel" />
+          <input name="description" value={values.description} onChange={change} maxLength="100" required placeholder="Ex.: aluguel" autoFocus={Boolean(entry)} />
         </label>
         <label>Valor (R$)
-          <input name="amount" value={values.amount} onChange={change} type="number" min="0.01" step="0.01" required placeholder="0,00" />
+          <input name="amount" value={values.amount} onChange={change} type="text" inputMode="decimal" required placeholder="0,00" />
         </label>
         <label>Data
           <input name="date" value={values.date} onChange={change} type="date" required />
@@ -61,7 +70,8 @@ export default function FinancialEntryForm({ onAdd }) {
             </select>
           </label>
         )}
-        <button type="submit">Adicionar lançamento</button>
+        <button type="submit">{entry ? "Salvar alterações" : "Adicionar lançamento"}</button>
+        {entry && <button type="button" className="secondary-button" onClick={onCancel}>Cancelar edição</button>}
       </form>
       {message && <p role="status">{message}</p>}
     </section>
