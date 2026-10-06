@@ -4,10 +4,12 @@ Protótipo acadêmico em React. O **Banco TRI** apresenta uma conta e movimenta�
 
 ## Estado atual
 
-- Dashboard do Banco TRI com dados de conta, saldo e extrato demonstrativos.
+- Dashboard do Banco TRI com conta fictícia, resumo de entradas/saídas e extrato demonstrativo pesquisável por descrição e tipo.
 - Visão financeira do FinUp com receitas, despesas, resultado e despesas por categoria.
-- Cadastro manual de receita ou despesa, com categoria e data; listagem identifica a origem de cada lançamento.
+- Cadastro, edição e exclusão com confirmação de receitas/despesas manuais, com categoria e data; listagem identifica a origem de cada lançamento. Transações do banco permanecem somente para leitura no FinUp.
 - Lançamentos manuais salvos no `localStorage` do navegador. Não são enviados ao Banco TRI, não sincronizam entre dispositivos e podem sumir se os dados do navegador forem apagados.
+
+O saldo do Banco TRI e o extrato fictício são dados de exemplo independentes. Os indicadores de entradas/saídas resumem somente o extrato exibido. O resultado do FinUp soma as transações demonstrativas e os registros locais considerados; **não corresponde ao saldo bancário**.
 
 Conteúdos de educação financeira, indicação **preliminar** de possíveis benefícios sociais e persistência remota estão previstos no projeto acadêmico, mas ainda não foram implementados. O pacote `@supabase/supabase-js` está instalado; **não existe integração com Supabase funcionando** nesta etapa. O protótipo não determina direito a benefícios nem substitui análise oficial.
 
@@ -27,6 +29,15 @@ npm run dev
 ```
 
 Abra o endereço mostrado pelo Vite e navegue entre **Dashboard** e **FinUp**. Os dados demonstrativos são usados por padrão. A variável `VITE_USE_MOCK=false` está reservada para uma integração futura e, por enquanto, produz erro informando que o Supabase não foi configurado.
+
+### Roteiro curto de demonstração
+
+1. No **Banco TRI**, mostre o saldo fictício, as entradas/saídas do extrato e filtre uma movimentação por descrição ou tipo.
+2. Abra o **FinUp** e mostre que as transações do banco aparecem identificadas como Banco TRI, sem opção de alteração.
+3. Cadastre uma despesa fictícia (por exemplo, material da oficina por R$ 19,90); observe o resultado e a categoria.
+4. Edite o valor e recarregue a página para demonstrar a persistência local; depois exclua com confirmação. Volte ao Banco TRI e confira que o extrato não mudou.
+
+Use somente dados fictícios na apresentação. O protótipo ainda não inclui o modo de rodadas da oficina (#7), conteúdos educativos (#8), indicação preliminar de benefícios (#9) nem persistência remota (#10).
 
 Para verificar alterações:
 

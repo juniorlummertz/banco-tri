@@ -1,8 +1,12 @@
 import TransactionItem from "./transactionItem"
 
 export default function TransactionList({ transactions }) {
+  if (transactions.length === 0) {
+    return <p className="empty-state">Nenhuma movimentação corresponde aos filtros.</p>
+  }
+
   return (
-    <div className="transaction-list">
+    <ul className="transaction-list">
 
       {transactions.map((transaction) => (
         <TransactionItem
@@ -11,6 +15,6 @@ export default function TransactionList({ transactions }) {
         />
       ))}
 
-    </div>
+    </ul>
   )
 }

@@ -31,5 +31,75 @@
         "direction": "debit",
         "category": "food",
         "createdAt": "2026-09-11T18:20:00"
+    },
+    {
+        "id": "transaction-003",
+        "accountId": "account-001",
+        "description": "Salário demonstrativo",
+        "type": "transfer",
+        "amount": 2800,
+        "direction": "credit",
+        "category": "income",
+        "createdAt": "2026-09-10T09:00:00"
+    },
+    {
+        "id": "transaction-004",
+        "accountId": "account-001",
+        "description": "Internet residencial",
+        "type": "payment",
+        "amount": 89.90,
+        "direction": "debit",
+        "category": "subscriptions",
+        "createdAt": "2026-09-09T12:10:00"
+    },
+    {
+        "id": "transaction-005",
+        "accountId": "account-001",
+        "description": "Conta de energia",
+        "type": "payment",
+        "amount": 142.35,
+        "direction": "debit",
+        "category": "housing",
+        "createdAt": "2026-09-08T14:45:00"
+    },
+    {
+        "id": "transaction-006",
+        "accountId": "account-001",
+        "description": "Farmácia",
+        "type": "purchase",
+        "amount": 45.60,
+        "direction": "debit",
+        "category": "health",
+        "createdAt": "2026-09-06T16:15:00"
+    },
+    {
+        "id": "transaction-007",
+        "accountId": "account-001",
+        "description": "Passagem de ônibus",
+        "type": "purchase",
+        "amount": 96,
+        "direction": "debit",
+        "category": "transport",
+        "createdAt": "2026-09-04T08:10:00"
+    },
+    {
+        "id": "transaction-008",
+        "accountId": "account-001",
+        "description": "Material escolar",
+        "type": "purchase",
+        "amount": 74.50,
+        "direction": "debit",
+        "category": "education",
+        "createdAt": "2026-09-03T11:40:00"
+    },
+    {
+        "id": "transaction-009",
+        "accountId": "account-001",
+        "description": "Aluguel",
+        "type": "payment",
+        "amount": 950,
+        "direction": "debit",
+        "category": "housing",
+        "createdAt": "2026-09-01T10:00:00"
     }
 ]}

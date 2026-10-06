@@ -9,8 +9,11 @@ import { getCategoryLabel } from "../../utils/category"
 export default function TransactionItem({ transaction }) {
   const isCredit =
     transaction.direction === "credit"
+  const date = new Intl.DateTimeFormat("pt-BR").format(
+    new Date(`${transaction.createdAt.slice(0, 10)}T12:00:00`)
+  )
   return (
-    <div className="transaction-item">
+    <li className="transaction-item">
 
       <div className="transaction-details">
         <strong>
@@ -22,7 +25,7 @@ export default function TransactionItem({ transaction }) {
           textos amigáveis, como "Alimentação".
         */}
         <span>
-          {getCategoryLabel(transaction.category)}
+          {getCategoryLabel(transaction.category)} · {date}
         </span>
       </div>
 
@@ -38,6 +41,6 @@ export default function TransactionItem({ transaction }) {
         {formatCurrency(transaction.amount)}
       </strong>
 
-    </div>
+    </li>
   )
 }

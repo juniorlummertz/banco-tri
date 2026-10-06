@@ -14,7 +14,9 @@ export function mapBankTransaction(transaction) {
 
 /* Valida no domínio, além das restrições visuais do formulário. */
 export function createManualEntry(values, id) {
-  const amount = Number(values.amount)
+  // Aceita ponto ou vírgula decimal, sem arredondar silenciosamente centavos.
+  const amountText = String(values.amount).trim()
+  const amount = Number(amountText.replace(",", "."))
   const description = values.description.trim()
   const date = values.date
   const [year, month, day] = date.split("-").map(Number)
@@ -23,7 +25,7 @@ export function createManualEntry(values, id) {
   const validCategory = values.type === "income" ||
     ["food", "housing", "transport", "health", "education", "leisure", "subscriptions", "other"].includes(values.category)
   if (!description || !["income", "expense"].includes(values.type) ||
-      !Number.isFinite(amount) || amount <= 0 || Math.round(amount * 100) / 100 !== amount ||
+      !/^\d+(?:[.,]\d{1,2})?$/.test(amountText) || !Number.isFinite(amount) || amount <= 0 ||
       !validDate || !validCategory) {
     throw new Error("Confira descrição, tipo, valor e data do lançamento.")
   }
@@ -37,4 +39,11 @@ export function createManualEntry(values, id) {
     date,
     source: "manual",
   }
+}
+
+export function reviseManualEntry(entry, values) {
+  if (entry.source !== "manual" || !entry.id.startsWith("manual:")) {
+    throw new Error("Apenas lançamentos do FinUp podem ser editados.")
+  }
+  return createManualEntry(values, entry.id.slice("manual:".length))
 }
