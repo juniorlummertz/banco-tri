@@ -1,4 +1,6 @@
 import { useState } from "react"
+import SelectField from "../../../../components/ui/SelectField"
+import DateField from "../../../../components/ui/DateField"
 
 // Categorias disponíveis na interface; os códigos são estáveis nos dados.
 const expenseCategories = [
@@ -26,8 +28,8 @@ export default function FinancialEntryForm({ onSave, entry = null, onCancel }) {
   const [values, setValues] = useState(() => initialValues(entry))
   const [message, setMessage] = useState("")
 
-  function change(event) {
-    setValues({ ...values, [event.target.name]: event.target.value })
+  function change(name, value) {
+    setValues((current) => ({ ...current, [name]: value }))
     setMessage("")
   }
 
@@ -49,26 +51,16 @@ export default function FinancialEntryForm({ onSave, entry = null, onCancel }) {
       <h2 id="add-entry-title">{entry ? "Editar lançamento do FinUp" : "Adicionar receita ou despesa"}</h2>
       <p>Os lançamentos ficam salvos neste navegador e não alteram a conta do Banco TRI.</p>
       <form onSubmit={submit} className="financial-entry-form">
-        <label>Tipo
-          <select name="type" value={values.type} onChange={change}>
-            <option value="expense">Despesa</option><option value="income">Receita</option>
-          </select>
-        </label>
+        <SelectField label="Tipo" value={values.type} onChange={(value) => change("type", value)} options={[{ value: "expense", label: "Despesa" }, { value: "income", label: "Receita" }]} />
         <label>Descrição
-          <input name="description" value={values.description} onChange={change} maxLength="100" required placeholder="Ex.: aluguel" autoFocus={Boolean(entry)} />
+          <input name="description" value={values.description} onChange={(event) => change("description", event.target.value)} maxLength="100" required placeholder="Ex.: aluguel" autoFocus={Boolean(entry)} />
         </label>
         <label>Valor (R$)
-          <input name="amount" value={values.amount} onChange={change} type="text" inputMode="decimal" required placeholder="0,00" />
+          <input name="amount" value={values.amount} onChange={(event) => change("amount", event.target.value)} type="text" inputMode="decimal" required placeholder="0,00" />
         </label>
-        <label>Data
-          <input name="date" value={values.date} onChange={change} type="date" required />
-        </label>
+        <DateField label="Data" value={values.date} onChange={(value) => change("date", value)} />
         {values.type === "expense" && (
-          <label>Categoria
-            <select name="category" value={values.category} onChange={change}>
-              {expenseCategories.map(([code, label]) => <option key={code} value={code}>{label}</option>)}
-            </select>
-          </label>
+          <SelectField label="Categoria" value={values.category} onChange={(value) => change("category", value)} options={expenseCategories.map(([code, label]) => ({ value: code, label }))} />
         )}
         <button type="submit">{entry ? "Salvar alterações" : "Adicionar lançamento"}</button>
         {entry && <button type="button" className="secondary-button" onClick={onCancel}>Cancelar edição</button>}

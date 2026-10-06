@@ -6,6 +6,7 @@ import { filterTransactions, summarizeTransactions } from "../../services/transa
 import { formatCurrency } from "../../utils/currency"
 import { ArrowDownLeft, ArrowUpRight, Activity, ShieldCheck, Sparkles } from "lucide-react"
 import LoadingScreen from "../../components/layout/LoadingScreen"
+import SelectField from "../../components/ui/SelectField"
 
 /* O Dashboard organiza a conta e o extrato; regras e acesso a dados ficam fora da página. */
 export default function Dashboard() {
@@ -64,14 +65,7 @@ export default function Dashboard() {
             Buscar movimentação
             <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ex.: supermercado" />
           </label>
-          <label>
-            Tipo de movimentação
-            <select value={direction} onChange={(event) => setDirection(event.target.value)}>
-              <option value="all">Todas</option>
-              <option value="credit">Entradas</option>
-              <option value="debit">Saídas</option>
-            </select>
-          </label>
+          <SelectField label="Tipo de movimentação" value={direction} onChange={setDirection} options={[{ value: "all", label: "Todas" }, { value: "credit", label: "Entradas" }, { value: "debit", label: "Saídas" }]} />
         </div>
 
         <TransactionList transactions={visibleTransactions} />
