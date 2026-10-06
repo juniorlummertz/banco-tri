@@ -1,852 +1,248 @@
-/* =========================================================
-   CONFIGURAÇÕES GLOBAIS
-   Regras aplicadas à aplicação inteira.
-   ========================================================= */
-/*
-  Faz com que padding e border façam parte
-  do tamanho total dos elementos.
-
-  Isso deixa o cálculo de largura e altura
-  mais previsível durante a estilização.
-*/
-* {
-    box-sizing: border-box;
+/* Base: duas identidades no mesmo produto, com tokens por área. */
+:root {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #142236;
+  background: #f3f6fa;
+  font-synthesis: none;
+  --blue: #008dcc;
+  --blue-dark: #006b9f;
+  --black: #142236;
+  --gray: #627287;
+  --gray-light: #dbe3eb;
+  --background: #f3f6fa;
+  --white: #fff;
+  --accent: #007db6;
+  --ink: #142236;
+  --surface: #fff;
+  --line: #e5ebf1;
+  --muted: #64758a;
+  --shadow: 0 16px 46px rgba(22, 50, 76, .065);
 }
-/*
-  :root representa o nível mais alto do documento.
-
-  Aqui definimos:
-  - fonte padrão da aplicação;
-  - cores principais;
-  - variáveis CSS reutilizáveis.
-
-  As variáveis começam com "--" e podem ser utilizadas
-  posteriormente com var(--nome-da-variavel).
-*/
-:root{
-    font-family: arial, helvetica, sans-serif;
- 
-    color: #111827;
-    background: #f4f7fb;
-  /* Paleta principal da aplicação */
-    --blue: #009ee3;
-  --blue-dark: #0076b2;
-  --black: #111827;
-  --gray: #6b7280;
-  --gray-light: #e5e7eb;
-  --background: #f4f7fb;
-  --white: #ffffff;
-}
-/*
-  Configurações gerais da página.
-
-  margin: 0 remove a margem padrão criada pelo navegador.
-
-  min-height: 100vh garante que a aplicação ocupe
-  pelo menos toda a altura da tela.
-*/
-body{
-    margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: var(--background);
-}
-/*
-  Faz inputs e botões herdarem a mesma fonte
-  utilizada pelo restante da aplicação.
-*/
-button,
-  input{
-        font: inherit;
-    }
-    /*
-  Remove o sublinhado padrão dos links
-  e faz o link utilizar a cor definida pelo elemento pai.
-*/
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
-    /* =========================================================
-   LAYOUT PRINCIPAL DA APLICAÇÃO
-   Divide a tela entre Sidebar e conteúdo.
-   ========================================================= */
-
-/*
-  O AppLayout possui duas colunas:
-
-  250px -> Sidebar
-  1fr   -> restante da tela para o conteúdo
-
-  CSS Grid é utilizado porque estamos dividindo
-  a página em regiões principais.
-*/
-.app-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  min-height: 100vh;
-}
-/*
-  Área onde cada página é exibida.
-
-  No React, é onde o <Outlet /> do AppLayout
-  renderiza Dashboard, FinUp e futuras páginas.
-*/
-.app-content {
-  padding: 40px;
-
-  background: #f4f7fb;
-}
-/* =========================================================
-   SIDEBAR
-   Menu lateral compartilhado entre as páginas.
-   ========================================================= */
-
-/*
-  Container principal da Sidebar.
-
-  Flexbox em coluna organiza:
-  - marca;
-  - menu;
-
-  um abaixo do outro.
-*/
-.sidebar {
-  background: #111827;
-  color: white;
-
-  padding: 28px 18px;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 40px;
-}
-/*
-  Região da identidade visual:
-  símbolo TRI + nome Banco Tri.
-*/
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-/*
-  Quadrado azul que representa visualmente
-  a marca "TRI".
-*/
-.brand-symbol {
-  width: 46px;
-  height: 46px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: #009ee3;
-
-  color: white;
-
-  font-weight: 800;
-  font-size: 14px;
-}
-/*
-  O nome "Banco Tri" ocupa sua própria linha.
-*/
-.brand strong {
-  display: block;
-}
-/*
-  Texto secundário abaixo do nome do banco.
-*/
-.brand span {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #9ca3af;
-
-  font-size: 12px;
-}
-/*
-  Container dos links do menu.
-
-  Cada opção aparece abaixo da anterior.
-*/
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-
-  gap: 8px;
-}
-/*
-  Estilo padrão de cada link da Sidebar.
-
-  O link contém:
-  - ícone;
-  - texto.
-*/
-.sidebar-link {
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 12px 14px;
-
-  color: #cbd5e1;
-
-  border-radius: 10px;
-
-  text-decoration: none;
-  /*
-    Suaviza alterações visuais,
-    como mudança de fundo no hover.
-  */
-  transition: 0.2s;
-}
-/*
-  :hover é aplicado quando o usuário
-  passa o mouse sobre o link.
-*/
-.sidebar-link:hover {
-  background: #1f2937;
-  color: white;
-}
-/*
-  A classe .active é adicionada pelo NavLink
-  quando aquela rota corresponde à página atual.
-
-  Exemplo:
-  /finup -> FinUp aparece destacado.
-*/
-.sidebar-link.active {
-  background: #009ee3;
-  color: white;
-}
-/* =========================================================
-   CARD DE SALDO
-   Utilizado pelo componente BalanceCard.
-   ========================================================= */
-
-/*
-  Card principal que apresenta:
-  - saldo disponível;
-  - agência;
-  - conta.
-*/
-.balance-card {
-  max-width: 720px;
-
-  padding: 28px;
-
-  margin: 24px 0;
-
-  border-radius: 20px;
-
-  color: white;
-/*
-    Cria o fundo em degradê azul.
-  */
-  background:
-    linear-gradient(
-      135deg,
-      #009ee3,
-      #006da8
-    );
-/*
-    Adiciona profundidade visual ao card.
-  */
-  box-shadow:
-    0 18px 40px
-    rgba(0, 117, 180, 0.18);
-}
-/*
-  Texto "Saldo disponível".
-*/
-.balance-label {
-  display: block;
-
-  color: #dff5ff;
-
-  font-size: 14px;
-}
-/*
-  Valor principal da conta.
-
-  Exemplo:
-  R$ 4.250,75
-*/
-.balance-value {
-  margin: 12px 0 32px;
-
-  font-size: 38px;
-
-  color: white;
-}
-/*
-  Organiza agência e número da conta
-  horizontalmente.
-*/
-.account-info {
-  display: flex;
-
-  gap: 30px;
-
-  color: #e7f7ff;
-
-  font-size: 14px;
-}
-/* =========================================================
-   EXTRATO / TRANSAÇÕES
-   Estilos dos componentes TransactionList e TransactionItem.
-   ========================================================= */
-
-/*
-  Painel branco onde as movimentações
-  financeiras são exibidas.
-*/
-.transactions-panel {
-  max-width: 720px;
-
-  padding: 26px;
-
-  margin-top: 28px;
-
-  border-radius: 18px;
-
-  background: white;
-
-  box-shadow:
-    0 8px 30px
-    rgba(15, 23, 42, 0.06);
-}
-/*
-  Cabeçalho do extrato.
-
-  Coloca o título à esquerda
-  e a quantidade de movimentações à direita.
-*/
-.transactions-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  margin-bottom: 16px;
-}
-/*
-  Título "Últimas movimentações".
-*/
-.transactions-header h2 {
-  margin: 4px 0 0;
-
-  font-size: 20px;
-}
-
-.section-label {
-  color: #009ee3;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-  letter-spacing: 0.08em;
-}
-/*
-  Texto que informa quantas movimentações existem.
-
-  Exemplo:
-  "2 movimentações".
-*/
-.transaction-count {
-  color: #6b7280;
-
-  font-size: 13px;
-}
-/*
-  Container de todas as transações.
-
-  Cada TransactionItem fica abaixo do anterior.
-*/
-.transaction-list {
-  display: flex;
-
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-/*
-  Representa uma única movimentação.
-
-  A descrição fica à esquerda
-  e o valor fica à direita.
-*/
-.transaction-item {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 18px 0;
-/*
-    Linha que separa visualmente
-    uma movimentação da outra.
-  */
-  border-bottom:
-    1px solid #e5e7eb;
-}
-/*
-  Remove a linha divisória
-  da última movimentação da lista.
-*/
-.transaction-item:last-child {
-  border-bottom: none;
-}
-/*
-  Agrupa descrição e categoria
-  da movimentação.
-*/
-.transaction-details {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-}
-/*
-  Estiliza o texto secundário
-  onde exibimos a categoria.
-
-  Exemplo:
-  Alimentação.
-*/
-.transaction-details span {
-  color: #6b7280;
-
-  font-size: 13px;
-}
-/*
-  Estilo base do valor da transação.
-*/
-.transaction-value {
-  font-size: 15px;
-}
-/*
-  Transação de entrada de dinheiro.
-
-  Verde representa crédito.
-*/
-.transaction-value.credit {
-  color: #059669;
-}
-/*
-  Transação de saída de dinheiro.
-
-  Vermelho representa débito.
-*/
-.transaction-value.debit {
-  color: #dc2626;
-}
-/* =========================================================
-   CABEÇALHO DAS PÁGINAS
-   Utilizado no Dashboard e no FinUp.
-   ========================================================= */
-
-/*
-  Limita a largura do cabeçalho
-  para acompanhar os demais elementos da página.
-*/
-.dashboard-header {
-  max-width: 720px;
-
-  margin-bottom: 24px;
-}
-/*
-  Título principal da página.
-
-  Exemplo:
-  "Olá, Junior"
-  ou
-  "Visão financeira".
-*/
-.dashboard-header h1 {
-  margin: 6px 0 8px;
-
-  font-size: 32px;
-}
-/*
-  Texto de apoio abaixo do título.
-*/
-.dashboard-header p {
-  margin: 0;
-
-  color: #6b7280;
-}/*
-  Pequeno título azul utilizado acima
-  de títulos maiores.
-
-  Exemplos:
-  VISÃO GERAL
-  EXTRATO
-  FINUP
-*/
-.section-label {
-  color: #009ee3;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  /*
-    Converte visualmente o texto para maiúsculo.
-  */
-  text-transform: uppercase;
-
-  /*
-    Aumenta levemente o espaço entre as letras.
-  */
-  letter-spacing: 0.08em;
-}
-/* =========================================================
-   FINUP
-   Estilos específicos da área de gestão financeira.
-   ========================================================= */
-
-/*
-  Container principal da página FinUp.
-
-  Permite que futuramente a página comporte
-  mais informações do que o Dashboard.
-*/
-.finup-page {
-  max-width: 1000px;
-}
-/*
-  Container dos cards:
-  - Receitas;
-  - Despesas;
-  - Resultado.
-
-  Grid cria três colunas de tamanho equivalente.
-*/
-.financial-summary {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 18px;
-
-  max-width: 900px;
-}
-/*
-  Estilo base compartilhado pelos
-  três cards financeiros.
-*/
-.financial-card {
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-
-  padding: 24px;
-
-  border-radius: 18px;
-
-  background: white;
-
-  box-shadow:
-    0 8px 30px
-    rgba(15, 23, 42, 0.06);
-}
-/*
-  Nome do indicador:
-
-  Receitas
-  Despesas
-  Resultado
-*/
-.financial-card span {
-  color: #6b7280;
-
-  font-size: 14px;
-}
-/*
-  Valor financeiro principal de cada card.
-*/
-.financial-card strong {
-  font-size: 26px;
-}
-/*
-  Receitas aparecem em verde.
-*/
-.financial-card.income strong {
-  color: #059669;
-}
-/*
-  Despesas aparecem em vermelho.
-*/
-.financial-card.expense strong {
-  color: #dc2626;
-}
-/*
-  Resultado aparece utilizando
-  a cor principal do Banco Tri.
-*/
-.financial-card.balance strong {
-  color: #009ee3;
-}
-/* =========================================================
-   FINUP - DESPESAS POR CATEGORIA
-
-   Área responsável por apresentar como
-   as despesas estão distribuídas.
-   ========================================================= */
-
-
-/*
-  Painel branco que contém
-  todas as categorias de despesas.
-*/
-.category-panel {
-  max-width: 900px;
-
-  margin-top: 28px;
-
-  padding: 26px;
-
-  border-radius: 18px;
-
-  background: white;
-
-  box-shadow:
-    0 8px 30px
-    rgba(15, 23, 42, 0.06);
-}
-
-
-/*
-  Cabeçalho da seção
-  "Despesas por categoria".
-*/
-.category-header {
-  margin-bottom: 18px;
-}
-
-
-/*
-  Ajusta o espaçamento do título
-  dentro do painel.
-*/
-.category-header h2 {
-  margin: 4px 0 0;
-
-  font-size: 20px;
-}
-
-
-/*
-  Container onde as categorias
-  serão apresentadas verticalmente.
-*/
-.category-list {
-  display: flex;
-
-  flex-direction: column;
-}
-
-
-/*
-  Cada item representa uma categoria.
-
-  O nome fica à esquerda
-  e o valor total fica à direita.
-*/
-.category-item {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 16px 0;
-
-  border-bottom:
-    1px solid #e5e7eb;
-}
-
-
-/*
-  Remove a linha divisória
-  do último elemento da lista.
-*/
-.category-item:last-child {
-  border-bottom: none;
-}
-
-
-/*
-  Valor financeiro total
-  daquela categoria.
-*/
-.category-item strong {
-  color: #dc2626;
-
-  font-size: 15px;
-}
-/* Formulário e lista do FinUp compartilham a largura dos indicadores. */
-.financial-entry-panel,
-.financial-entries-panel {
-  max-width: 900px;
-  margin-top: 28px;
-  padding: 26px;
-  border-radius: 18px;
-  background: white;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-}
-.financial-entry-panel h2,
-.financial-entries-panel h2 { margin: 0 0 12px; font-size: 20px; }
-.financial-entry-panel p { color: var(--gray); }
-/* Cada campo tem rótulo próprio; o grid se adapta à largura disponível. */
-.financial-entry-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 16px;
-}
-.financial-entry-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
-.financial-entry-form input,
-.financial-entry-form select {
-  width: 100%; padding: 11px; border: 1px solid var(--gray-light);
-  border-radius: 8px; background: white;
-}
-.financial-entry-form button {
-  align-self: end; min-height: 43px; padding: 10px 16px;
-  border: 0; border-radius: 8px; color: white;
-  background: var(--blue-dark); cursor: pointer;
-}
-.financial-entry-form button:hover { background: #005f91; }
-/* A lista identifica a origem e destaca entradas e saídas. */
-.financial-entries-list { padding: 0; margin: 0; list-style: none; }
-.financial-entries-list li {
-  display: flex; justify-content: space-between; gap: 16px;
-  padding: 14px 0; border-bottom: 1px solid var(--gray-light);
-}
-.financial-entries-list li:last-child { border-bottom: 0; }
-.financial-entries-list small { display: block; margin-top: 4px; color: var(--gray); }
-.entry-income { color: #059669; }
-.entry-expense { color: #dc2626; }
-/* O resumo do Banco TRI descreve apenas o extrato fictício mostrado. */
-.dashboard-page { max-width: 900px; }
-.bank-summary {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px; max-width: 720px;
-}
-.bank-summary-card {
-  display: flex; flex-direction: column; gap: 8px;
-  min-width: 0; padding: 20px; border-radius: 16px;
-  background: white; box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-}
-.bank-summary-card span { color: var(--gray); font-size: 13px; }
-.bank-summary-card strong { font-size: 22px; overflow-wrap: anywhere; }
-.summary-note { max-width: 720px; margin: 12px 0 0; color: var(--gray); font-size: 13px; line-height: 1.5; }
-/* Busca e seletor funcionam com teclado, inclusive quando o filtro fica vazio. */
-.transaction-filters {
-  display: grid; grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr);
-  gap: 14px; margin: 0 0 12px;
-}
-.transaction-filters label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; }
-.transaction-filters input,
-.transaction-filters select {
-  width: 100%; min-height: 44px; padding: 10px 12px;
-  border: 1px solid var(--gray-light); border-radius: 9px;
-  background: white; color: var(--black); font: inherit;
-}
-.transaction-details { min-width: 0; overflow-wrap: anywhere; }
-.transaction-value { flex-shrink: 0; }
-.empty-state { margin: 16px 0 0; color: var(--gray); }
-/* Ações manuais aparecem apenas nos registros do FinUp. */
-.financial-entry-form button,
-.entry-actions button,
-.delete-confirmation button {
-  transition: background-color 160ms ease, color 160ms ease;
-}
-.financial-entry-form .secondary-button {
-  background: #e8eef5; color: var(--blue-dark);
-}
-.financial-entry-form .secondary-button:hover { background: #d9e7f2; }
-.financial-entries-list li { flex-wrap: wrap; align-items: flex-start; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+:where(button, input, select, a):focus-visible { outline: 3px solid #ffb84d; outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Marca tipográfica e símbolo geométrico originais do protótipo. */
+.brand-symbol { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid rgba(255,255,255,.27); border-radius: 11px; background: #059cda; transform: skew(-7deg); flex: none; }
+.brand-symbol i { display: block; width: 5px; height: 18px; background: white; border-radius: 5px; transform: skew(7deg); }
+.brand-symbol i:nth-child(2) { height: 26px; background: #d9f5ff; }
+.brand-symbol i:nth-child(3) { height: 14px; }
+.brand-word, .entry-brand > span:last-child { font-size: 31px; font-weight: 820; letter-spacing: -.09em; line-height: 1; }
+.brand-word span, .brand-dot, .balance-brand span { color: #36cbf7; }
+.eyebrow, .section-label { font-size: 11px; font-weight: 800; letter-spacing: .13em; color: var(--accent); }
+.eyebrow.light { color: #8ad7f3; }
+.status-dot { width: 7px; height: 7px; display: inline-block; flex: none; background: #16bd91; border-radius: 50%; box-shadow: 0 0 0 3px rgba(22,189,145,.13); }
+
+/* Entrada: composição editorial e ilustração vetorial feita com CSS. */
+.entry-page { display: grid; grid-template-columns: minmax(480px, 52%) minmax(420px, 48%); min-height: 100vh; }
+.entry-story { overflow: hidden; color: white; background: radial-gradient(circle at 85% 72%, #114f82 0, transparent 43%), linear-gradient(135deg, #051929 0%, #092e4d 60%, #053558 100%); position: relative; }
+.entry-story::before { content: ""; position: absolute; inset: 0; opacity: .18; background: repeating-linear-gradient(122deg, transparent 0 160px, #20a5df 161px 163px, transparent 164px 242px); pointer-events: none; }
+.entry-story::after { content: ""; position: absolute; width: 140%; height: 250px; bottom: -222px; left: -20%; transform: rotate(-14deg); border-top: 2px solid rgba(153,231,255,.42); }
+.entry-story-inner { display: flex; flex-direction: column; max-width: 740px; min-height: 100vh; padding: clamp(28px, 4vw, 58px) clamp(28px, 5.7vw, 90px) 34px; position: relative; margin-left: auto; }
+.entry-brand { display: inline-flex; align-items: center; gap: 11px; color: white; }
+.entry-copy { position: relative; z-index: 1; margin-top: clamp(82px, 12vh, 150px); }
+.entry-copy h1 { font-size: clamp(48px, 5.4vw, 83px); line-height: 1.065; letter-spacing: -.067em; margin: 24px 0; font-weight: 730; }
+.entry-copy h1 em { color: #53c5ed; font-weight: inherit; font-style: normal; }
+.entry-copy p { max-width: 410px; color: #bbd0df; font-size: 17px; line-height: 1.65; margin: 0; }
+.entry-visual { position: relative; min-height: 310px; margin-top: 16px; }
+.entry-orbit { position: absolute; border: 1px solid rgba(121,205,239,.19); border-radius: 50%; transform: rotate(-19deg); }
+.orbit-one { width: 520px; height: 210px; left: 8%; top: 50px; }
+.orbit-two { width: 570px; height: 235px; left: 12%; top: 15px; }
+.entry-card { position: absolute; display: flex; flex-direction: column; justify-content: space-between; left: 21%; top: 24px; width: min(360px, 78%); aspect-ratio: 1.65; padding: 26px 28px; border: 1px solid rgba(255,255,255,.35); border-radius: 20px; color: white; box-shadow: 18px 30px 54px rgba(0,0,0,.38); transform: rotate(-10deg); background: linear-gradient(135deg, rgba(255,255,255,.17), transparent 45%), repeating-linear-gradient(110deg, transparent 0 145px, rgba(255,255,255,.13) 146px 150px, transparent 151px 190px), linear-gradient(145deg, #0188c0, #073352 80%); }
+.entry-card-top { display: flex; justify-content: space-between; font-size: 26px; font-weight: 800; letter-spacing: -.08em; }
+.entry-card-top span { color: #6cdbff; }
+.entry-card-top small { align-self: center; font-size: 9px; font-weight: 700; letter-spacing: .1em; }
+.entry-card-chip { width: 40px; height: 29px; border-radius: 6px; border: 1px solid #c7e1eb; background: linear-gradient(90deg, #c1d9dc, #edf2ee, #a6c0c9); }
+.entry-card-bottom { font-size: 13px; letter-spacing: .14em; font-weight: 600; }
+.entry-story-footer { margin-top: auto; display: flex; justify-content: space-between; gap: 15px; color: #82a8be; font-size: 10px; letter-spacing: .12em; font-weight: 700; }
+.entry-access { display: flex; flex-direction: column; min-width: 0; min-height: 100vh; padding: 34px clamp(30px, 5.4vw, 90px); background: #f9fbfd; }
+.entry-access-top, .entry-access-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; color: #77869a; }
+.access-tag { display: inline-flex; align-items: center; gap: 10px; color: #3d546c; font-weight: 650; }
+.entry-access-content { max-width: 425px; width: 100%; margin: auto; padding: 54px 0; }
+.entry-emblem { width: 66px; height: 66px; border-radius: 19px; display: grid; place-items: center; background: #e8f6fc; margin-bottom: 38px; }
+.entry-emblem .brand-symbol { width: 43px; height: 43px; }
+.entry-access h2 { color: #0f263a; font-size: clamp(32px, 3.15vw, 45px); letter-spacing: -.055em; line-height: 1.12; margin: 12px 0 16px; }
+.entry-lead { color: #63778a; font-size: 16px; line-height: 1.65; max-width: 390px; margin: 0 0 34px; }
+.entry-form { display: grid; gap: 17px; }
+.demo-identity { display: flex; align-items: center; gap: 14px; min-width: 0; border: 1px solid #dce7ed; border-radius: 16px; padding: 15px; background: white; box-shadow: 0 7px 24px rgba(31,71,93,.04); }
+.demo-avatar { width: 43px; height: 43px; border-radius: 13px; display: grid; place-items: center; background: #ddf1fa; color: #006e9c; font-weight: 800; flex: none; }
+.demo-identity > span:nth-child(2) { flex: 1; min-width: 0; }
+.demo-identity strong, .demo-identity small { display: block; }
+.demo-identity strong { font-size: 14px; }
+.demo-identity small { margin-top: 4px; font-size: 12px; color: var(--muted); }
+.demo-identity svg { color: #0098cb; flex: none; }
+.primary-button { width: 100%; min-height: 56px; border: 0; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; background: #077eaf; color: white; font-size: 15px; font-weight: 750; box-shadow: 0 11px 25px rgba(4,115,164,.2); transition: background-color 180ms cubic-bezier(.2,.8,.2,1), transform 180ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms cubic-bezier(.2,.8,.2,1); }
+.primary-button:hover:not(:disabled) { background: #006c9b; box-shadow: 0 14px 28px rgba(4,115,164,.26); transform: translateY(-2px); }
+.primary-button:active:not(:disabled) { transform: translateY(0); }
+.primary-button:disabled { opacity: .75; cursor: wait; }
+.entry-legal { display: flex; gap: 8px; align-items: flex-start; justify-content: center; font-size: 12px; color: #748697; line-height: 1.4; margin: 0; }
+.entry-legal svg { flex: none; }
+.entry-access-footer { justify-content: flex-start; border-top: 1px solid #e3eaf0; padding-top: 24px; line-height: 1.4; }
+.entry-access-footer svg { color: #0e9e9b; flex: none; }
+
+/* Estrutura do aplicativo: navegação escura e áreas de produto distintas. */
+.app-layout { display: grid; grid-template-columns: 258px minmax(0, 1fr); min-height: 100vh; --accent: #087cae; --ink: #152b43; --muted: #64758a; --surface: #fff; }
+.theme-finup { --accent: #008f80; --ink: #123b3b; --muted: #64807e; --line: #dcebe8; --shadow: 0 16px 46px rgba(20,67,65,.06); }
+.sidebar { background: #091e30; color: #d6e5ed; display: flex; flex-direction: column; padding: 38px 18px 22px; gap: 60px; }
+.sidebar-head { padding: 0 15px; }
+.brand { display: flex; align-items: center; gap: 12px; color: white; }
+.sidebar-caption { display: block; margin-top: 22px; font-size: 9px; letter-spacing: .16em; font-weight: 800; color: #819cb2; }
+.sidebar-nav-group { display: grid; gap: 17px; }
+.sidebar-group-label { padding: 0 15px; font-size: 10px; color: #8096a8; letter-spacing: .14em; font-weight: 800; }
+.sidebar-menu { display: grid; gap: 5px; }
+.sidebar-link { display: flex; align-items: center; gap: 15px; min-height: 48px; padding: 0 16px; border-radius: 10px; color: #a9bfcc; font-size: 14px; font-weight: 650; transition: background-color 180ms cubic-bezier(.2,.8,.2,1), color 180ms cubic-bezier(.2,.8,.2,1); }
+.sidebar-link:hover { background: #15364e; color: white; }
+.sidebar-link.active { background: #124d71; color: white; box-shadow: inset 3px 0 #45c3f1; }
+.theme-finup .sidebar-link.active { background: #0f484b; box-shadow: inset 3px 0 #28c6ad; }
+.sidebar-bottom { margin-top: auto; display: grid; gap: 18px; }
+.sidebar-info { display: flex; align-items: flex-start; gap: 10px; padding: 18px 13px; border: 1px solid #244056; border-radius: 12px; background: #102b40; font-size: 11px; line-height: 1.65; color: #a4bdcc; }
+.sidebar-info svg { color: #51c5e8; flex: none; }
+.sidebar-info strong { color: white; font-weight: 600; }
+.logout-button { display: flex; align-items: center; gap: 11px; padding: 12px 15px; border: 0; background: transparent; color: #a9bfcc; text-align: left; font-size: 12px; border-radius: 10px; transition: color 180ms, background-color 180ms; }
+.logout-button:hover { color: white; background: #183b54; }
+.app-content { min-width: 0; padding: 35px clamp(28px, 5vw, 76px) 70px; background: #f3f6fa; transition: background-color 240ms cubic-bezier(.2,.8,.2,1); }
+.theme-finup .app-content { background: #f2f8f6; }
+.dashboard-page, .finup-page { max-width: 1160px; margin: 0 auto; animation: page-enter 280ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes page-enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+.page-topline { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 48px; font-size: 10px; letter-spacing: .13em; font-weight: 800; color: #73869a; }
+.topline-slash { color: #b2c3d0; padding: 0 10px; }
+.demo-badge { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 30px; background: white; border: 1px solid #e5ebf0; font-size: 10px; letter-spacing: .075em; color: #3b566a; white-space: nowrap; }
+.theme-finup .demo-badge { border-color: #dbeae6; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; gap: 25px; margin-bottom: 27px; }
+.dashboard-header h1 { color: var(--ink); margin: 8px 0 7px; font-size: clamp(30px, 3vw, 42px); letter-spacing: -.055em; line-height: 1.16; }
+.dashboard-header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.wave { color: #149cc8; font-size: .65em; vertical-align: 4px; }
+.header-mark { width: 45px; height: 45px; display: grid; place-items: center; color: #0993c3; background: #e5f4fa; border-radius: 13px; flex: none; }
+
+/* Cartão de saldo com faixas diagonais discretas e ação de privacidade. */
+.balance-card { overflow: hidden; position: relative; min-height: 315px; padding: clamp(26px, 3vw, 40px); border-radius: 22px; color: white; background: radial-gradient(circle at 79% 35%, #12618d, transparent 38%), linear-gradient(112deg, #061d31 8%, #073c5b 70%, #08688f 120%); box-shadow: 0 22px 45px rgba(5,50,82,.16); }
+.balance-art { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.balance-art span { position: absolute; top: -160px; right: 0; width: 95px; height: 650px; background: rgba(23,161,206,.12); transform: rotate(24deg); }
+.balance-art span:nth-child(2) { right: 112px; width: 20px; background: rgba(255,255,255,.1); }
+.balance-art span:nth-child(3) { right: 158px; width: 6px; background: rgba(125,216,237,.32); }
+.balance-top, .balance-main, .account-info { position: relative; z-index: 1; }
+.balance-top { display: flex; justify-content: space-between; align-items: center; }
+.balance-account-tag { display: inline-flex; align-items: center; gap: 10px; color: #bfe2ed; letter-spacing: .12em; font-weight: 750; font-size: 10px; }
+.balance-brand { font-size: 31px; font-weight: 850; letter-spacing: -.1em; line-height: 1; }
+.balance-main { margin: 53px 0 36px; }
+.balance-label { display: flex; align-items: center; gap: 9px; font-size: 13px; color: #c6dfe8; }
+.visibility-button { display: inline-grid; place-items: center; background: transparent; color: #bad7e5; border: 0; padding: 3px; border-radius: 5px; }
+.visibility-button:hover { color: white; }
+.balance-value { margin: 7px 0 9px; font-size: clamp(34px, 4vw, 51px); letter-spacing: -.045em; color: white; overflow-wrap: anywhere; }
+.balance-caption { display: inline-flex; align-items: center; gap: 5px; color: #9ccce0; font-size: 12px; }
+.account-info { border-top: 1px solid rgba(255,255,255,.2); padding-top: 19px; display: flex; gap: 36px; font-size: 13px; font-weight: 650; }
+.account-info > span:not(.account-chip) { display: grid; gap: 6px; }
+.account-info small { color: #9fc4d4; font-size: 9px; font-weight: 750; letter-spacing: .13em; }
+.account-chip { display: flex; margin-left: auto; align-items: center; }
+.account-chip i { width: 23px; height: 23px; border-radius: 50%; background: rgba(68,184,225,.7); }
+.account-chip i + i { margin-left: -9px; background: rgba(215,241,248,.7); }
+
+/* Indicadores reutilizados: cores financeiras, informação e hierarquia. */
+.bank-summary, .financial-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; margin-top: 22px; }
+.bank-summary-card, .financial-card { display: flex; flex-direction: column; min-width: 0; min-height: 182px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); transition: transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 220ms cubic-bezier(.2,.8,.2,1); }
+.bank-summary-card:hover, .financial-card:hover { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(22,50,76,.095); }
+.summary-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; margin-bottom: 17px; }
+.income-icon { color: #138d76; background: #e5f7ef; }
+.expense-icon { color: #c67050; background: #fff1eb; }
+.activity-icon { color: #0789bd; background: #e6f4fa; }
+.bank-summary-card > span:not(.summary-icon), .financial-card > span:not(.summary-icon) { font-size: 12px; color: var(--muted); font-weight: 600; }
+.bank-summary-card strong, .financial-card strong { margin: 6px 0; color: var(--ink); font-size: clamp(23px, 2vw, 29px); line-height: 1.15; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.bank-summary-card small, .financial-card small { font-size: 11px; color: #8a99aa; }
+.bank-summary-card strong.entry-income, .financial-card.income strong { color: #157d67; }
+.bank-summary-card strong.entry-expense, .financial-card.expense strong { color: #b36348; }
+.financial-card.balance strong { color: #007f76; }
+.summary-note { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--muted); line-height: 1.55; margin: 15px 2px 0; }
+.summary-note svg { color: var(--accent); flex: none; }
+
+/* Extrato e filtros: linhas claras, busca e vazio legíveis. */
+.transactions-panel, .category-panel, .financial-entry-panel, .financial-entries-panel { padding: clamp(22px, 3vw, 34px); margin-top: 34px; border-radius: 19px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.transactions-header, .category-header { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 25px; }
+.transactions-header h2, .category-header h2, .financial-entry-panel h2, .financial-entries-panel h2 { color: var(--ink); margin: 5px 0 0; font-size: 22px; line-height: 1.2; letter-spacing: -.035em; }
+.transaction-count { font-size: 12px; color: var(--accent); font-weight: 750; padding: 9px 12px; border-radius: 8px; background: #e9f6fa; white-space: nowrap; }
+.transaction-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(165px, 1fr); gap: 15px; margin-bottom: 9px; }
+.transaction-filters label, .financial-entry-form label { display: grid; gap: 8px; color: var(--ink); font-size: 12px; font-weight: 750; }
+.transaction-filters input, .transaction-filters select, .financial-entry-form input, .financial-entry-form select { appearance: none; width: 100%; min-height: 45px; border: 1px solid #dbe4eb; border-radius: 9px; padding: 10px 13px; color: var(--ink); background: #fafcfd; font-size: 13px; transition: border-color 160ms, box-shadow 160ms; }
+.transaction-filters select, .financial-entry-form select { appearance: auto; }
+.transaction-filters input:focus, .transaction-filters select:focus, .financial-entry-form input:focus, .financial-entry-form select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,157,190,.1); }
+.transaction-filters input::placeholder, .financial-entry-form input::placeholder { color: #9aaabb; }
+.transaction-list, .financial-entries-list { list-style: none; padding: 0; margin: 0; }
+.transaction-item { display: flex; align-items: center; gap: 15px; padding: 19px 0; border-bottom: 1px solid var(--line); }
+.transaction-item:last-child, .financial-entries-list li:last-child { border-bottom: 0; }
+.transaction-icon { width: 43px; height: 43px; display: grid; place-items: center; flex: none; border-radius: 12px; }
+.transaction-icon.credit { background: #e5f7ef; color: #158064; }
+.transaction-icon.debit { background: #f0f5f8; color: #587b94; }
+.transaction-details { display: grid; gap: 5px; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.transaction-details strong { font-size: 13px; color: var(--ink); }
+.transaction-details span { font-size: 11px; color: var(--muted); }
+.transaction-value { flex: none; font-size: 14px; color: var(--ink); white-space: nowrap; }
+.transaction-value.credit { color: #178067; }
+.transaction-value.debit { color: #243d51; }
+.empty-state { padding: 27px 16px; border-radius: 10px; background: #f4f8fa; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* FinUp usa a paleta verde do material da faculdade: #023436, #00A896 e #02C39A. */
+.finup-hero { position: relative; display: flex; overflow: hidden; align-items: center; min-height: 229px; padding: 37px 42px; border-radius: 20px; background: radial-gradient(circle at 85% 70%, #087d78, transparent 45%), linear-gradient(115deg, #023436, #075850); color: white; box-shadow: 0 21px 38px rgba(5,67,61,.13); }
+.finup-hero-copy { position: relative; z-index: 1; max-width: 630px; }
+.finup-hero-tag { display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border-radius: 6px; background: rgba(195,246,224,.12); color: #b9f3e8; font-size: 10px; font-weight: 800; letter-spacing: .11em; }
+.finup-hero h1 { font-size: clamp(34px, 3.4vw, 48px); letter-spacing: -.055em; margin: 22px 0 9px; }
+.finup-hero h1 span { color: #02c39a; }
+.finup-hero p { max-width: 560px; margin: 0; color: #c2e2dc; font-size: 14px; line-height: 1.6; }
+.finup-hero-art { position: absolute; right: -40px; top: -90px; width: 340px; height: 360px; pointer-events: none; }
+.finup-hero-art span { position: absolute; inset: 30px; border: 1px solid rgba(118,245,211,.26); border-radius: 50%; }
+.finup-hero-art span:nth-child(2) { inset: 75px; border-width: 18px; border-color: rgba(2,195,154,.14); }
+.finup-hero-art span:nth-child(3) { inset: 130px; background: rgba(2,195,154,.24); border: 0; }
+.theme-finup .activity-icon { color: #008f80; background: #e3f6f0; }
+.theme-finup .section-label { color: #008e80; }
+.financial-entry-panel h2, .financial-entries-panel h2 { margin-bottom: 8px; }
+.financial-entry-panel p, .list-description { color: var(--muted); line-height: 1.5; font-size: 13px; margin: 0 0 23px; }
+.financial-entry-form { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; align-items: end; }
+.financial-entry-form button { min-height: 45px; border-radius: 9px; border: 0; padding: 10px 16px; background: #008f80; color: white; font-size: 12px; font-weight: 750; transition: background-color 180ms, transform 180ms; }
+.financial-entry-form button:hover { background: #006d65; transform: translateY(-1px); }
+.financial-entry-form button:active { transform: translateY(0); }
+.financial-entry-form .secondary-button { background: #e4f3ef; color: #00695f; }
+.financial-entry-form .secondary-button:hover { background: #d4eae4; }
+.action-feedback, .financial-entry-panel [role="status"] { margin: 16px 0 0; padding: 13px 16px; border-radius: 10px; background: #e1f5eb; color: #0b725b; font-size: 13px; font-weight: 600; }
+.category-header { margin-bottom: 7px; }
+.category-list { display: grid; }
+.category-item { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.category-item:last-child { border: 0; padding-bottom: 0; }
+.category-line { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 11px; }
+.category-line span { color: var(--ink); font-weight: 620; }
+.category-line strong { color: #007b70; }
+.category-track { height: 7px; border-radius: 9px; overflow: hidden; background: #e7f1ee; }
+.category-track span { display: block; width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #00a896, #02c39a); transform-origin: left center; transition: transform 240ms cubic-bezier(.2,.8,.2,1); }
+.financial-entries-list li { display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: space-between; gap: 14px; padding: 17px 0; border-bottom: 1px solid var(--line); }
 .entry-description { min-width: 0; overflow-wrap: anywhere; }
-.entry-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-.entry-actions { display: flex; gap: 8px; }
-.entry-actions button,
-.delete-confirmation button {
-  min-height: 40px; padding: 7px 10px;
-  border: 1px solid #c9d8e5; border-radius: 8px;
-  background: white; color: #075985; cursor: pointer; font: inherit;
-}
-.entry-actions button:hover,
-.delete-confirmation button:hover { background: #e8f3fb; }
-.delete-confirmation {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
-  width: 100%; padding: 12px; border-radius: 9px;
-  background: #fff3f2; color: #7f1d1d;
-}
-.delete-confirmation .danger-button { background: #b91c1c; border-color: #b91c1c; color: white; }
-.delete-confirmation .danger-button:hover { background: #991b1b; }
-.action-feedback { max-width: 900px; padding: 12px 16px; border-radius: 9px; background: #e7f8ef; color: #047857; }
-.list-description { margin: 0 0 12px; color: var(--gray); font-size: 14px; line-height: 1.5; }
-.financial-card strong,
-.balance-value { overflow-wrap: anywhere; }
-:where(button, input, select, a):focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
-/* =========================================================
-   RESPONSIVIDADE
-   Adapta a interface para telas menores.
-   ========================================================= */
+.entry-description strong { color: var(--ink); font-size: 13px; }
+.entry-description small { display: block; color: var(--muted); margin-top: 7px; font-size: 11px; }
+.entry-side { flex: none; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.entry-side > strong { color: var(--ink); font-size: 14px; }
+.entry-side > strong.entry-income { color: #178067; }
+.entry-side > strong.entry-expense { color: #ad664a; }
+.entry-actions { display: flex; gap: 7px; }
+.entry-actions button, .delete-confirmation button { border: 1px solid #d6e6e2; border-radius: 7px; min-height: 35px; padding: 6px 11px; background: white; color: #006f67; font-size: 11px; font-weight: 700; transition: background-color 160ms; }
+.entry-actions button:hover, .delete-confirmation button:hover { background: #e9f5f1; }
+.delete-confirmation { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; width: 100%; padding: 12px; border-radius: 9px; background: #fff1ed; color: #83372f; font-size: 12px; }
+.delete-confirmation .danger-button { background: #aa4439; border-color: #aa4439; color: white; }
+.delete-confirmation .danger-button:hover { background: #88362d; }
 
-/*
-  @media aplica essas regras somente
-  quando a tela possuir até 800px de largura.
+/* Esqueleto acompanha as proporções da interface enquanto os dados chegam. */
+.loading-screen { display: grid; gap: 17px; max-width: 1160px; margin: 30px auto; }
+.skeleton { display: block; background: linear-gradient(100deg, #e1eaf1 10%, #f2f6f9 50%, #e1eaf1 90%); background-size: 220% 100%; border-radius: 13px; animation: shimmer 1.4s linear infinite; }
+.loading-finup .skeleton { background-image: linear-gradient(100deg, #deede8 10%, #f2f9f6 50%, #deede8 90%); }
+.skeleton-kicker { width: 180px; height: 15px; }
+.skeleton-title { width: min(390px, 75%); height: 40px; margin-top: 30px; }
+.skeleton-subtitle { width: min(480px, 90%); height: 16px; }
+.skeleton-hero { height: 300px; margin-top: 15px; }
+.skeleton-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 17px; }
+.skeleton-grid .skeleton { height: 177px; }
+@keyframes shimmer { to { background-position-x: -220%; } }
 
-  Em telas pequenas, os três cards deixam
-  de ficar lado a lado e passam a ficar
-  um abaixo do outro.
-*/
-@media (max-width: 800px) {
-  .app-layout { grid-template-columns: 1fr; }
-  .app-content { padding: 24px; }
-  .sidebar { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding: 16px 24px; }
-  .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
-  .financial-summary {
-    grid-template-columns: 1fr;
-  }
-  .bank-summary { grid-template-columns: 1fr; }
-}
-@media (max-width: 520px) {
-  .app-content { padding: 22px 16px; }
-  .sidebar { padding: 14px 16px; }
-  .sidebar-menu { width: 100%; }
-  .sidebar-link { flex: 1; justify-content: center; }
-  .transaction-filters { grid-template-columns: 1fr; }
-  .financial-entries-list li { gap: 10px; }
-  .entry-side { align-items: flex-start; width: 100%; }
-  .transactions-panel,
-  .financial-entry-panel,
-  .financial-entries-panel,
-  .category-panel { padding: 20px; }
-  .dashboard-header h1 { font-size: 28px; }
-  .balance-value { font-size: 30px; }
-  .account-info { flex-wrap: wrap; gap: 8px 20px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .financial-entry-form button,
-  .entry-actions button,
-  .delete-confirmation button { transition: none; }
-}
+/* Telas menores: os mesmos elementos sem cortes ou rolagem horizontal. */
+@media (max-width: 1100px) { .entry-page { grid-template-columns: 50% 50%; } .entry-story-inner { padding-left: 40px; padding-right: 40px; } .entry-access { padding-left: 40px; padding-right: 40px; } .app-layout { grid-template-columns: 220px minmax(0,1fr); } .app-content { padding: 30px 35px 60px; } }
+@media (max-width: 800px) { .entry-page { grid-template-columns: 1fr; } .entry-story-inner { min-height: 380px; max-width: none; } .entry-copy { margin-top: 40px; } .entry-copy h1 { font-size: 48px; } .entry-copy p { font-size: 14px; } .entry-visual { position: absolute; right: 0; bottom: 10px; width: 45%; min-height: 200px; opacity: .55; } .entry-card { width: 220px; } .entry-story-footer { display: none; } .entry-access { min-height: 560px; } .entry-access-content { padding: 40px 0; } .app-layout { grid-template-columns: 1fr; } .sidebar { padding: 15px 24px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; } .sidebar-head { padding: 0; } .sidebar-caption, .sidebar-group-label, .sidebar-info { display: none; } .sidebar-menu { display: flex; gap: 5px; } .sidebar-bottom { margin: 0; } .logout-button { font-size: 0; gap: 0; } .logout-button svg { width: 20px; height: 20px; } .page-topline { margin-bottom: 32px; } }
+@media (max-width: 620px) { .entry-story-inner { min-height: 318px; padding: 24px; } .entry-copy { margin-top: 38px; } .entry-copy h1 { font-size: clamp(39px, 10vw, 52px); margin: 14px 0; } .entry-copy p { max-width: 275px; font-size: 12px; } .entry-visual { display: none; } .entry-access { min-height: 570px; padding: 24px; } .entry-access-top > span:last-child { display: none; } .entry-emblem { margin-bottom: 25px; } .sidebar { padding: 12px 16px; } .sidebar-head .brand-symbol { width: 35px; height: 35px; } .brand-word { font-size: 26px; } .sidebar-menu { width: 100%; } .sidebar-nav-group { order: 3; width: 100%; } .sidebar-link { justify-content: center; flex: 1; min-height: 41px; padding: 0 10px; font-size: 12px; } .sidebar-bottom { margin-left: auto; } .app-content { padding: 24px 16px 45px; } .page-topline { margin-bottom: 30px; font-size: 9px; } .demo-badge { font-size: 9px; padding: 7px 9px; } .dashboard-header h1 { font-size: 31px; } .wave, .header-mark { display: none; } .balance-card { min-height: 290px; padding: 23px; } .balance-main { margin: 48px 0 30px; } .balance-value { font-size: 34px; } .bank-summary, .financial-summary, .skeleton-grid { grid-template-columns: 1fr; gap: 10px; } .bank-summary-card, .financial-card { min-height: 112px; padding: 17px 19px; } .summary-icon { margin-bottom: 9px; width: 32px; height: 32px; } .bank-summary-card strong, .financial-card strong { font-size: 25px; } .transactions-panel, .category-panel, .financial-entry-panel, .financial-entries-panel { margin-top: 24px; padding: 20px 18px; } .transaction-filters, .financial-entry-form { grid-template-columns: 1fr; } .transaction-item { gap: 10px; } .transaction-icon { width: 37px; height: 37px; } .transaction-value { font-size: 12px; } .finup-hero { padding: 29px 23px; min-height: 210px; } .finup-hero-art { opacity: .3; } .finup-hero h1 { font-size: 33px; } .category-header { align-items: flex-start; flex-direction: column; } .entry-side { align-items: flex-start; width: 100%; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
