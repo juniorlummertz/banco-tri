@@ -26,6 +26,10 @@ Leia este arquivo antes de implementar qualquer alteração neste repositório. 
 
 ## Verificações do projeto
 
-- Rode `npm run lint`, `npm test` (quando existir na branch) e `npm run build` para alterações de código, além de testar manualmente o fluxo afetado quando possível.
-- Preserve a separação entre interface, regras de negócio e acesso a dados. Descreva no PR eventuais diferenças entre o protótipo e o TAP.
+- Rode `npm run lint`, `npm test`, `npm run build`, `npm run perf:budget`, `npm audit --omit=dev --audit-level=high` e `npm run test:e2e` para alterações de código, além de testar manualmente o fluxo afetado quando possível. O workflow `Quality / quality` executa esses comandos em PRs para `main`; não mescle se falhar.
+- A proteção de `main` precisa exigir PR e o check `quality`. Um workflow isolado não impede merge ou push direto: confira o ruleset/proteção antes de afirmar que a esteira é obrigatória. Exija revisão humana e resolva conversas antes de integrar.
+- Revise segurança e operação em cada mudança: dados pessoais, autorização, segredos, dependências, abuso, custo e desempenho. Uma API pública futura deve ter rate limit no servidor, com testes de abuso; controle no cliente não protege a API.
+- Preserve as fronteiras: páginas e componentes apresentam estado; hooks coordenam; serviços calculam regras; repositórios e `src/services` acessam dados. Evite lógica de banco na interface, duplicar componentes existentes e abstrações antecipadas. Compartilhe código quando houver repetição real; observe gargalos com medidas antes de otimizar.
+- Antes de integrar coleta de dados pessoais, termos de uso ou política de privacidade, obtenha revisão e aprovação do jurídico e registre a evidência no PR. Agentes não devem declarar aprovação jurídica sem ela.
+- Observabilidade em produção, cobertura externa e ferramentas adicionais devem ter Issue e motivação concreta; preserve privacidade e evite vários SDKs com a mesma finalidade. Descreva no PR eventuais diferenças entre o protótipo e o TAP.
 - Para mudanças somente em Markdown, confira links, numeração das Issues/PRs e clareza do texto; explique no PR que não há build de produto a validar.
