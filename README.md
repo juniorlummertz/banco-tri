@@ -2,6 +2,10 @@
 
 Protótipo acadêmico em React. O **Banco TRI** apresenta uma conta e movimentações bancárias demonstrativas. O **FinUp** organiza essas movimentações como receitas e despesas e permite registrar lançamentos próprios para acompanhar o orçamento. O FinUp é o projeto de educação financeira da equipe; o Banco TRI funciona como fonte simulada de transações.
 
+![Prévia ilustrada do Banco TRI e FinUp](docs/social-preview.png)
+
+Este repositório documenta a construção do protótipo para apresentação acadêmica e portfólio. A imagem acima é uma peça de apresentação, não uma captura de uma conta real. Para avaliar o trabalho, comece pelo [estado atual](#estado-atual), siga o [roteiro de demonstração](#roteiro-curto-de-demonstração) e consulte a [esteira de qualidade](#esteira-de-qualidade). A execução local usa somente dados fictícios.
+
 ## Estado atual
 
 - Tela inicial de entrada demonstrativa e sessão temporária por aba, com opção de sair. **Não há autenticação real:** não informa senha, não verifica identidade e não protege dados privados.
