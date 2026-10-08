@@ -12,7 +12,7 @@ Esta documentação descreve **o que o protótipo faz hoje**. Valores, titular, 
 
 ## Banco TRI e FinUp
 
-O Banco TRI fornece movimentações fictícias para a demonstração. O FinUp usa esses registros como uma das fontes de sua visão financeira e mantém os lançamentos manuais separados da conta bancária. A documentação própria do FinUp virá em uma etapa posterior ([Issue #35](https://github.com/juniorlummertz/banco-tri/issues/35)).
+O Banco TRI fornece movimentações fictícias para a demonstração. O FinUp usa esses registros como uma das fontes de sua visão financeira e mantém os lançamentos manuais separados da conta bancária. [Consulte a documentação própria do FinUp](../finup/README.md).
 
 ## Estado e próximos passos
 

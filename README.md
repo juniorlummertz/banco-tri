@@ -9,7 +9,7 @@ Este repositório documenta a construção dos dois produtos para demonstração
 ## Documentação dos produtos
 
 - [Banco TRI: visão geral, funcionamento e arquitetura](docs/banco-tri/README.md).
-- FinUp: documentação própria em preparação na [Issue #35](https://github.com/juniorlummertz/banco-tri/issues/35).
+- [FinUp: visão geral, uso e arquitetura](docs/finup/README.md).
 
 ## Estado atual
 
@@ -45,10 +45,10 @@ Abra o endereço mostrado pelo Vite, clique em **Entrar na conta** para acessar 
 
 1. No **Banco TRI**, mostre o saldo fictício, as entradas/saídas do extrato e filtre uma movimentação por descrição ou tipo.
 2. Abra o **FinUp** e mostre que as transações do banco aparecem identificadas como Banco TRI, sem opção de alteração.
-3. Cadastre uma despesa fictícia (por exemplo, material da oficina por R$ 19,90); observe o resultado e a categoria.
+3. Cadastre uma despesa fictícia (por exemplo, compra de mercado por R$ 19,90); observe o resultado e a categoria.
 4. Edite o valor e recarregue a página para demonstrar a persistência local; depois exclua com confirmação. Volte ao Banco TRI e confira que o extrato não mudou.
 
-Use somente dados fictícios na apresentação. O protótipo ainda não inclui o modo de rodadas da oficina (#7), conteúdos educativos (#8), indicação preliminar de benefícios (#9) nem persistência remota (#10).
+Use somente dados fictícios na apresentação. O protótipo ainda não inclui conteúdos educativos (#8), indicação preliminar de benefícios (#9) nem persistência remota (#10).
 
 Para verificar alterações:
 

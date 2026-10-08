@@ -5,8 +5,8 @@ Leia este arquivo antes de implementar qualquer alteração neste repositório. 
 ## Produto e escopo
 
 - **Banco TRI:** protótipo bancário e fonte demonstrativa de conta/transações.
-- **FinUp:** projeto acadêmico de organização e educação financeira e de indicação **preliminar** de possíveis benefícios sociais. Não confundir transações do banco com registros próprios do FinUp.
-- O TAP e o projeto de intervenção no CEEP orientam o escopo acadêmico. Confira as versões vigentes desses documentos quando disponíveis. Não apresente módulos planejados como concluídos nem prometa concessão de benefícios.
+- **FinUp:** produto de organização financeira em evolução, com educação financeira e indicação **preliminar** de possíveis benefícios sociais no planejamento. Não confundir transações do banco com registros próprios do FinUp.
+- A documentação pública apresenta Banco TRI e FinUp como produtos distintos de portfólio. Materiais produzidos em grupo podem servir como referência interna, mas não devem ser republicados sem revisar dados de terceiros, alegações de parceria e atribuição. Não apresente módulos planejados como concluídos nem prometa concessão de benefícios.
 - Verifique o código e o README para saber o que já funciona. Supabase e deploy somente devem ser descritos como ativos depois de implementados e validados.
 
 ## Antes de começar uma tarefa
@@ -31,5 +31,5 @@ Leia este arquivo antes de implementar qualquer alteração neste repositório. 
 - Revise segurança e operação em cada mudança: dados pessoais, autorização, segredos, dependências, abuso, custo e desempenho. Uma API pública futura deve ter rate limit no servidor, com testes de abuso; controle no cliente não protege a API.
 - Preserve as fronteiras: páginas e componentes apresentam estado; hooks coordenam; serviços calculam regras; repositórios e `src/services` acessam dados. Evite lógica de banco na interface, duplicar componentes existentes e abstrações antecipadas. Compartilhe código quando houver repetição real; observe gargalos com medidas antes de otimizar.
 - Antes de integrar coleta de dados pessoais, termos de uso ou política de privacidade, obtenha revisão e aprovação do jurídico e registre a evidência no PR. Agentes não devem declarar aprovação jurídica sem ela.
-- Observabilidade em produção, cobertura externa e ferramentas adicionais devem ter Issue e motivação concreta; preserve privacidade e evite vários SDKs com a mesma finalidade. Descreva no PR eventuais diferenças entre o protótipo e o TAP.
+- Observabilidade em produção, cobertura externa e ferramentas adicionais devem ter Issue e motivação concreta; preserve privacidade e evite vários SDKs com a mesma finalidade. Descreva no PR eventuais diferenças entre a implementação e a documentação pública.
 - Para mudanças somente em Markdown, confira links, numeração das Issues/PRs e clareza do texto; explique no PR que não há build de produto a validar.
