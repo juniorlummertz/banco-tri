@@ -1,15 +1,20 @@
 # Banco TRI + FinUp
 
-Protótipo acadêmico em React. O **Banco TRI** apresenta uma conta e movimentações bancárias demonstrativas. O **FinUp** organiza essas movimentações como receitas e despesas e permite registrar lançamentos próprios para acompanhar o orçamento. O FinUp é o projeto de educação financeira da equipe; o Banco TRI funciona como fonte simulada de transações.
+Protótipo de portfólio em React. O **Banco TRI** apresenta uma conta e movimentações bancárias demonstrativas. O **FinUp** organiza essas movimentações como receitas e despesas e permite registrar lançamentos próprios para acompanhar o orçamento. O Banco TRI funciona como fonte simulada de transações para o FinUp.
 
 ![Prévia ilustrada do Banco TRI e FinUp](docs/social-preview.png)
 
-Este repositório documenta a construção do protótipo para apresentação acadêmica e portfólio. A imagem acima é uma peça de apresentação, não uma captura de uma conta real. Para avaliar o trabalho, comece pelo [estado atual](#estado-atual), siga o [roteiro de demonstração](#roteiro-curto-de-demonstração) e consulte a [esteira de qualidade](#esteira-de-qualidade). A execução local usa somente dados fictícios.
+Este repositório documenta a construção dos dois produtos para demonstração e portfólio. A imagem acima é uma peça de apresentação, não uma captura de uma conta real. Para avaliar o trabalho, comece pelo [estado atual](#estado-atual), siga o [roteiro de demonstração](#roteiro-curto-de-demonstração) e consulte a [esteira de qualidade](#esteira-de-qualidade). A execução local usa somente dados fictícios.
+
+## Documentação dos produtos
+
+- [Banco TRI: visão geral, funcionamento e arquitetura](docs/banco-tri/README.md).
+- FinUp: documentação própria em preparação na [Issue #35](https://github.com/juniorlummertz/banco-tri/issues/35).
 
 ## Estado atual
 
 - Tela inicial de entrada demonstrativa e sessão temporária por aba, com opção de sair. **Não há autenticação real:** não informa senha, não verifica identidade e não protege dados privados.
-- Identidades visuais distintas: Banco TRI em azul, branco e preto com geometria original; FinUp em verde profundo/turquesa conforme a apresentação da equipe. Páginas sob demanda, esqueleto de carregamento e animações discretas com suporte a movimento reduzido.
+- Identidades visuais distintas: Banco TRI em azul, branco e preto com geometria original; FinUp em verde profundo/turquesa. Páginas sob demanda, esqueleto de carregamento e animações discretas com suporte a movimento reduzido.
 - Dashboard do Banco TRI com conta fictícia, resumo de entradas/saídas e extrato demonstrativo pesquisável por descrição e tipo.
 - Visão financeira do FinUp com receitas, despesas, resultado e despesas por categoria.
 - Cadastro, edição e exclusão com confirmação de receitas/despesas manuais, com categoria e data; listagem identifica a origem de cada lançamento. Transações do banco permanecem somente para leitura no FinUp.
@@ -17,7 +22,7 @@ Este repositório documenta a construção do protótipo para apresentação aca
 
 O saldo do Banco TRI e o extrato fictício são dados de exemplo independentes. Os indicadores de entradas/saídas resumem somente o extrato exibido. O resultado do FinUp soma as transações demonstrativas e os registros locais considerados; **não corresponde ao saldo bancário**.
 
-Conteúdos de educação financeira, indicação **preliminar** de possíveis benefícios sociais e persistência remota estão previstos no projeto acadêmico, mas ainda não foram implementados. O pacote `@supabase/supabase-js` está instalado; **não existe integração com Supabase funcionando** nesta etapa. O protótipo não determina direito a benefícios nem substitui análise oficial.
+Conteúdos de educação financeira, indicação **preliminar** de possíveis benefícios sociais e persistência remota fazem parte do planejamento, mas ainda não foram implementados. O pacote `@supabase/supabase-js` está instalado; **não existe integração com Supabase funcionando** nesta etapa. O protótipo não determina direito a benefícios nem substitui análise oficial.
 
 ## Tecnologias
 
@@ -91,4 +96,4 @@ Fluxo atual: página → hook → regras e repositório → dados locais ou API 
 
 ## Próximos passos
 
-Evoluir o módulo financeiro com edição e exclusão de lançamentos, acrescentar os módulos de educação e benefícios conforme o escopo acadêmico e, depois, definir persistência remota e validação com usuários. A oficina de orçamento pode usar lançamentos fictícios, considerando que o armazenamento atual é local a cada navegador.
+Documentar o FinUp separadamente (#35), evoluir os conteúdos de educação e benefícios planejados (#8 e #9) e definir persistência remota (#10) e validação com usuários (#16). As demonstrações devem usar dados fictícios, considerando que o armazenamento manual atual é local a cada navegador.
